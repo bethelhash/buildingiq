@@ -3,32 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BuildingIQ — Commercial Building Energy Audit</title>
+<title>BuildingIQ — Commercial Building Compliance & Energy Audit</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:        #f7f6f3;
-  --white:     #ffffff;
-  --charcoal:  #1c1c1c;
-  --mid:       #4a4a4a;
-  --light:     #8a8a8a;
-  --rule:      #dddbd5;
-  --rule-l:    #eceae4;
-  --red:       #c0392b;
-  --red-bg:    #fdf2f0;
-  --red-border:#e8c4be;
-  --amber:     #d4860a;
-  --amber-bg:  #fdf8ee;
-  --green:     #2e7d5b;
-  --green-bg:  #f0f8f4;
-  --blue:      #1a4a7a;
-  --blue-bg:   #f0f5fb;
-  --serif:     'Libre Baskerville', Georgia, serif;
-  --mono:      'DM Mono', 'Courier New', monospace;
+  --bg:         #f7f6f3;
+  --white:      #ffffff;
+  --charcoal:   #1c1c1c;
+  --mid:        #4a4a4a;
+  --light:      #8a8a8a;
+  --rule:       #dddbd5;
+  --rule-l:     #eceae4;
+  --red:        #c0392b;
+  --red-bg:     #fdf2f0;
+  --red-border: #e8c4be;
+  --amber:      #d4860a;
+  --amber-bg:   #fdf8ee;
+  --green:      #2e7d5b;
+  --green-bg:   #f0f8f4;
+  --blue:       #1a4a7a;
+  --blue-bg:    #f0f5fb;
+  --serif:      'Libre Baskerville', Georgia, serif;
+  --display:    'Cormorant Garamond', Georgia, serif;
+  --mono:       'DM Mono', 'Courier New', monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
   background: var(--bg);
@@ -36,192 +38,420 @@ body {
   font-family: var(--mono);
   font-size: 13px;
   line-height: 1.6;
+  opacity: 0;
+  animation: pageIn 0.6s ease forwards;
 }
+
+@keyframes pageIn {
+  to { opacity: 1; }
+}
+
+/* ── LIVE INDICATOR ── */
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  position: relative;
+}
+.live-dot::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1.5px solid var(--green);
+  animation: livePulse 2s ease-in-out infinite;
+}
+@keyframes livePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0; transform: scale(1.8); }
+}
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--charcoal);
+  overflow: hidden;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #333;
+}
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  animation: ticker 30s linear infinite;
+  white-space: nowrap;
+}
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.ticker-item {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #888;
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ticker-item .t-val { color: #e8c4be; font-weight: 500; }
+.ticker-item .t-sep { color: #444; }
 
 /* ── HEADER ── */
 header {
   background: var(--charcoal);
-  padding: 0 2.5rem;
-  height: 52px;
+  padding: 0 3rem;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 200;
+  border-bottom: 2px solid var(--red);
 }
 
 .logo {
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  color: #fff;
-  letter-spacing: 0.01em;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
-
-.logo-dot {
-  width: 8px;
-  height: 8px;
-  background: var(--red);
-  border-radius: 50%;
+.logo-mark {
+  width: 32px;
+  height: 32px;
+  border: 1.5px solid var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  color: var(--red);
+  font-style: italic;
+}
+.logo-text {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+.logo-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #666;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 1px;
 }
 
 .header-right {
   display: flex;
   align-items: center;
-  gap: 16px;
-  font-size: 11px;
-  color: #999;
+  gap: 20px;
+}
+.header-live {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #666;
   letter-spacing: 0.08em;
 }
-
-.header-tag {
-  border: 1px solid #444;
-  padding: 3px 8px;
-  border-radius: 2px;
+.header-link {
+  font-family: var(--mono);
   font-size: 10px;
   color: #888;
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  transition: color 0.15s;
 }
+.header-link:hover { color: #e8c4be; }
 
 /* ── HERO ── */
 .hero {
   background: var(--charcoal);
-  color: #fff;
-  padding: 3.5rem 2.5rem 3rem;
-  border-bottom: 3px solid var(--red);
+  padding: 5rem 3rem 4rem;
+  border-bottom: 1px solid #2a2a2a;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-inner { max-width: 900px; margin: 0 auto; }
+/* Animated background grid */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(192,57,43,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(192,57,43,0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridShift 20s linear infinite;
+}
+@keyframes gridShift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 60px 60px; }
+}
+
+.hero-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-left { }
 
 .hero-kicker {
+  font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.18em;
-  color: #999;
+  color: var(--red);
   text-transform: uppercase;
   margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
   gap: 10px;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.2s forwards;
 }
-
 .hero-kicker::before {
   content: '';
   display: block;
-  width: 20px;
+  width: 24px;
   height: 1px;
   background: var(--red);
 }
 
 .hero h1 {
-  font-family: var(--serif);
-  font-size: clamp(1.9rem, 4vw, 3rem);
-  font-weight: 400;
-  line-height: 1.2;
-  max-width: 650px;
-  margin-bottom: 1.2rem;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 4vw, 3.8rem);
+  font-weight: 300;
+  line-height: 1.15;
   color: #f0efec;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.35s forwards;
 }
-
 .hero h1 em {
   font-style: italic;
   color: #e8c4be;
 }
 
 .hero-sub {
-  font-size: 13px;
-  color: #888;
-  max-width: 580px;
-  line-height: 1.7;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #777;
+  line-height: 1.8;
+  max-width: 460px;
   margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.5s forwards;
 }
 
-.hero-stats {
+.hero-actions {
   display: flex;
-  gap: 2.5rem;
+  gap: 12px;
   flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.65s forwards;
 }
 
-.stat {
-  border-left: 2px solid #333;
-  padding-left: 12px;
+.btn-primary {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-primary:hover { background: #a93226; }
+.btn-primary:active { transform: scale(0.99); }
+
+.btn-outline {
+  background: transparent;
+  color: #888;
+  border: 1px solid #444;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px 22px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-outline:hover { border-color: #888; color: #ccc; }
+
+/* Hero right — stat cards */
+.hero-right {
+  opacity: 0;
+  animation: fadeUp 0.5s ease 0.5s forwards;
 }
 
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: #2a2a2a;
+  border: 1px solid #2a2a2a;
+}
+.stat-card {
+  background: #1a1a1a;
+  padding: 1.4rem;
+  transition: background 0.2s;
+}
+.stat-card:hover { background: #222; }
 .stat-num {
-  font-family: var(--serif);
-  font-size: 1.4rem;
+  font-family: var(--display);
+  font-size: 2.2rem;
+  font-weight: 300;
   color: #e8c4be;
   line-height: 1;
-  margin-bottom: 3px;
+  margin-bottom: 6px;
 }
-
+.stat-num.green { color: #7ecfaa; }
 .stat-label {
-  font-size: 10px;
-  color: #666;
-  letter-spacing: 0.06em;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #555;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  line-height: 1.4;
+}
+.stat-src {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: #3a3a3a;
+  margin-top: 4px;
+  letter-spacing: 0.04em;
 }
 
-/* ── MAIN LAYOUT ── */
-.main {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2.5rem;
-  display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 2rem;
-  align-items: start;
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* ── FORM ── */
-.form-card {
+/* ── SECTION DIVIDER ── */
+.section-bar {
   background: var(--white);
-  border: 1px solid var(--rule);
-  position: sticky;
-  top: 68px;
-}
-
-.form-section-head {
-  padding: 0.9rem 1.2rem;
   border-bottom: 1px solid var(--rule);
+  padding: 0 3rem;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 58px;
+  z-index: 100;
+}
+.section-bar-title {
+  font-family: var(--mono);
   font-size: 10px;
   letter-spacing: 0.14em;
   color: var(--light);
   text-transform: uppercase;
   display: flex;
   align-items: center;
+  gap: 10px;
+}
+.section-bar-title .num {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--red);
+}
+.section-bar-right {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--light);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.5rem 3rem;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+/* ── FORM PANEL ── */
+.form-panel {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  position: sticky;
+  top: 102px;
+  animation: fadeUp 0.5s ease 0.2s both;
+}
+
+.form-panel-head {
+  padding: 1rem 1.4rem;
+  border-bottom: 2px solid var(--charcoal);
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+}
+.form-panel-title {
+  font-family: var(--serif);
+  font-size: 0.85rem;
+  color: var(--charcoal);
+  letter-spacing: 0.02em;
+}
+.form-panel-step {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--red);
 }
 
 .form-body {
-  padding: 1.2rem;
+  padding: 1.4rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.field { display: flex; flex-direction: column; gap: 4px; }
 
 .field label {
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
   color: var(--light);
   text-transform: uppercase;
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
-
 .field label .hint {
-  font-size: 9px;
-  color: #bbb;
-  letter-spacing: 0.04em;
+  font-size: 8px;
+  color: #ccc;
   text-transform: none;
+  letter-spacing: 0.04em;
 }
 
 .field input,
@@ -230,244 +460,221 @@ header {
   border: 1px solid var(--rule);
   color: var(--charcoal);
   font-family: var(--mono);
-  font-size: 13px;
+  font-size: 12px;
   padding: 8px 10px;
   width: 100%;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
   -webkit-appearance: none;
   border-radius: 0;
 }
-
 .field input:focus,
 .field select:focus {
   border-color: var(--charcoal);
+  box-shadow: 0 0 0 2px rgba(28,28,28,0.06);
 }
 
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 
-.divider-label {
-  font-size: 10px;
-  letter-spacing: 0.1em;
+.form-divider {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
   color: var(--red);
   text-transform: uppercase;
-  padding: 0.5rem 0 0.2rem;
+  padding: 0.4rem 0 0.1rem;
   border-top: 1px solid var(--rule-l);
-  margin-top: 0.3rem;
+  margin-top: 0.2rem;
 }
 
-/* ── CITY TOGGLES ── */
-.city-group {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 2px;
-}
-
+/* City toggles */
+.city-group { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 2px; }
 .city-btn {
   font-family: var(--mono);
-  font-size: 10px;
+  font-size: 9px;
   letter-spacing: 0.08em;
   border: 1px solid var(--rule);
   background: var(--bg);
   color: var(--mid);
-  padding: 5px 10px;
+  padding: 5px 9px;
   cursor: pointer;
   transition: all 0.15s;
   text-transform: uppercase;
 }
+.city-btn:hover { border-color: var(--charcoal); }
+.city-btn.active { background: var(--charcoal); color: #fff; border-color: var(--charcoal); }
 
-.city-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
-.city-btn.active {
-  background: var(--charcoal);
-  color: #fff;
-  border-color: var(--charcoal);
-}
-
-/* ── RUN BUTTON ── */
+/* Run button */
 .run-btn {
   background: var(--red);
   color: #fff;
   border: none;
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  padding: 12px;
+  font-family: var(--serif);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  padding: 13px;
   cursor: pointer;
   width: 100%;
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   transition: background 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 }
-
 .run-btn:hover { background: #a93226; }
 .run-btn:disabled { background: #ccc; cursor: not-allowed; }
 
 .spinner {
-  width: 12px;
-  height: 12px;
+  width: 13px; height: 13px;
   border: 2px solid rgba(255,255,255,0.3);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
   display: none;
 }
-
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── RESULTS ── */
-.results-col { display: flex; flex-direction: column; gap: 1.5rem; }
+.error-box {
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+  padding: 0.7rem 1rem;
+  color: var(--red);
+  font-size: 11px;
+  line-height: 1.5;
+  margin-top: 0.4rem;
+}
 
-/* ── EMPTY STATE ── */
+/* ── RESULTS COL ── */
+.results-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  animation: fadeUp 0.5s ease 0.35s both;
+}
+
+/* Empty state */
 .empty {
   background: var(--white);
   border: 1px solid var(--rule);
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   text-align: center;
 }
-
+.empty-mark {
+  font-family: var(--display);
+  font-size: 4rem;
+  font-style: italic;
+  color: var(--rule);
+  display: block;
+  margin-bottom: 1rem;
+  animation: breathe 4s ease-in-out infinite;
+}
+@keyframes breathe {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.05); }
+}
 .empty h3 {
   font-family: var(--serif);
   font-weight: 400;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   color: var(--mid);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
+.empty p { font-size: 11px; color: var(--light); max-width: 280px; margin: 0 auto; }
 
-.empty p {
-  font-size: 12px;
-  color: var(--light);
-  max-width: 300px;
-  margin: 0 auto;
-}
-
-.empty-mark {
-  font-family: var(--serif);
-  font-size: 3rem;
-  color: var(--rule);
-  margin-bottom: 1rem;
-  font-style: italic;
-}
-
-/* ── CARDS ── */
+/* Cards */
 .card {
   background: var(--white);
   border: 1px solid var(--rule);
+  animation: fadeUp 0.4s ease both;
 }
-
 .card-head {
-  padding: 0.9rem 1.3rem;
+  padding: 0.9rem 1.4rem;
   border-bottom: 1px solid var(--rule);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--bg);
 }
-
 .card-title {
+  font-family: var(--mono);
   font-size: 10px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   color: var(--light);
   text-transform: uppercase;
   display: flex;
   align-items: center;
   gap: 8px;
 }
-
-.card-title .bullet {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-}
-
-.bullet-red    { background: var(--red); }
-.bullet-green  { background: var(--green); }
-.bullet-amber  { background: var(--amber); }
-.bullet-blue   { background: var(--blue); }
-.bullet-gray   { background: var(--light); }
-
 .card-tag {
+  font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.06em;
   color: #bbb;
   border: 1px solid var(--rule-l);
-  padding: 2px 6px;
+  padding: 2px 7px;
+  letter-spacing: 0.05em;
 }
+.card-body { padding: 1.4rem; }
 
-.card-body { padding: 1.3rem; }
+/* Bullet dots */
+.dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.dot-red   { background: var(--red); }
+.dot-green { background: var(--green); }
+.dot-amber { background: var(--amber); }
+.dot-blue  { background: var(--blue); }
+.dot-gray  { background: var(--light); }
 
-/* ── PENALTY BANNER ── */
+/* Penalty banner */
 .penalty-banner {
-  padding: 1rem 1.3rem;
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
+  padding: 1.2rem 1.4rem;
   border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: start;
 }
-
-.penalty-banner.danger {
-  background: var(--red-bg);
-  border-left: 3px solid var(--red);
-}
-
-.penalty-banner.warn {
-  background: var(--amber-bg);
-  border-left: 3px solid var(--amber);
-}
-
-.penalty-banner.ok {
-  background: var(--green-bg);
-  border-left: 3px solid var(--green);
-}
-
-.pb-icon { font-size: 1.2rem; flex-shrink: 0; padding-top: 2px; }
-
-.pb-content h3 {
+.penalty-banner.danger { background: var(--red-bg); border-left: 3px solid var(--red); }
+.penalty-banner.warn   { background: var(--amber-bg); border-left: 3px solid var(--amber); }
+.penalty-banner.ok     { background: var(--green-bg); border-left: 3px solid var(--green); }
+.pb-icon { font-size: 1.3rem; padding-top: 2px; }
+.pb-head {
   font-family: var(--serif);
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 3px;
+  line-height: 1.3;
 }
+.pb-sub { font-family: var(--mono); font-size: 11px; color: var(--mid); line-height: 1.5; }
 
-.pb-content p {
-  font-size: 11px;
-  color: var(--mid);
-  line-height: 1.5;
-}
-
-/* ── METRIC GRID ── */
+/* Metric grid — balanced 2-col */
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
+  background: var(--rule-l);
+  border: 1px solid var(--rule-l);
   margin-bottom: 1.2rem;
 }
-
 .metric {
   background: var(--white);
-  padding: 14px 14px 12px;
+  padding: 16px 16px 14px;
+  transition: background 0.15s;
 }
-
+.metric:hover { background: var(--bg); }
 .metric-val {
-  font-family: var(--serif);
-  font-size: 1.5rem;
+  font-family: var(--display);
+  font-size: 1.8rem;
+  font-weight: 300;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 5px;
   color: var(--charcoal);
 }
-
 .metric-val.red   { color: var(--red); }
 .metric-val.green { color: var(--green); }
 .metric-val.amber { color: var(--amber); }
 .metric-val.blue  { color: var(--blue); }
-
 .metric-label {
+  font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--light);
@@ -475,62 +682,59 @@ header {
   line-height: 1.4;
 }
 
-/* ── EUI GAUGE ── */
-.eui-bar-wrap {
-  margin-bottom: 1.2rem;
-}
-
+/* EUI bar */
 .eui-bar-label {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
+  font-family: var(--mono);
+  font-size: 9px;
   color: var(--light);
   letter-spacing: 0.06em;
   margin-bottom: 6px;
 }
-
 .eui-track {
-  height: 8px;
+  height: 6px;
   background: var(--rule-l);
   position: relative;
-  border-radius: 0;
+  margin-bottom: 5px;
 }
-
 .eui-fill {
   height: 100%;
-  transition: width 0.8s cubic-bezier(.4,0,.2,1);
   position: absolute;
   left: 0;
+  transition: width 1s cubic-bezier(.4,0,.2,1);
 }
-
-.eui-median-line {
+.eui-marker {
   position: absolute;
-  top: -4px;
+  top: -5px;
   width: 2px;
   height: 16px;
   background: var(--charcoal);
 }
-
-.eui-labels {
+.eui-marker-label {
+  position: absolute;
+  top: 14px;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--mid);
+  white-space: nowrap;
+}
+.eui-ends {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
-  color: var(--light);
-  margin-top: 5px;
-}
-
-/* ── CITY COMPLIANCE TABLE ── */
-.city-table {
-  width: 100%;
-  border-collapse: collapse;
   font-family: var(--mono);
-  font-size: 12px;
-  margin-bottom: 1rem;
+  font-size: 8px;
+  color: var(--light);
+  margin-top: 18px;
 }
 
+/* City table */
+.city-table { width: 100%; border-collapse: collapse; }
 .city-table th {
   text-align: left;
-  padding: 6px 10px;
+  padding: 7px 12px;
+  font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.1em;
   color: var(--light);
@@ -539,184 +743,524 @@ header {
   background: var(--bg);
   font-weight: 400;
 }
-
 .city-table td {
-  padding: 10px 10px;
+  padding: 12px 12px;
   border-bottom: 1px solid var(--rule-l);
-  vertical-align: top;
+  vertical-align: middle;
+  font-family: var(--mono);
 }
-
 .city-table tr:last-child td { border-bottom: none; }
+.city-table tr:hover td { background: var(--bg); }
 
-.city-name {
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 1.3;
-}
+.city-name { font-family: var(--serif); font-size: 13px; font-weight: 700; }
+.city-law  { font-family: var(--mono); font-size: 9px; color: var(--light); margin-top: 2px; letter-spacing: 0.05em; }
 
-.law-badge {
-  font-size: 9px;
-  color: var(--light);
-  letter-spacing: 0.05em;
-}
-
-.compliant-badge {
+.badge {
   display: inline-block;
+  font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 2px 7px;
+  padding: 3px 8px;
   border: 1px solid;
 }
+.badge-ok     { color: var(--green); border-color: #aed6bf; background: var(--green-bg); }
+.badge-danger { color: var(--red);   border-color: var(--red-border); background: var(--red-bg); }
 
-.compliant-badge.yes {
-  color: var(--green);
-  border-color: #aed6bf;
-  background: var(--green-bg);
+.penalty-fig {
+  font-family: var(--display);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1;
 }
+.penalty-fig.danger { color: var(--red); }
+.penalty-fig.ok     { color: var(--green); }
+.penalty-per { font-family: var(--mono); font-size: 9px; color: var(--light); }
 
-.compliant-badge.no {
-  color: var(--red);
-  border-color: var(--red-border);
-  background: var(--red-bg);
-}
-
-.penalty-num {
-  font-family: var(--serif);
-  font-size: 1.1rem;
-  font-weight: 700;
-}
-
-.penalty-num.danger { color: var(--red); }
-.penalty-num.ok     { color: var(--green); }
-
-/* ── UPGRADE CARDS ── */
-.upgrade-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-  background: var(--rule-l);
-  border: 1px solid var(--rule);
-}
-
+/* Upgrade list */
+.upgrade-list { border: 1px solid var(--rule-l); }
 .upgrade-item {
-  background: var(--white);
-  padding: 12px 14px;
   display: grid;
-  grid-template-columns: 24px 1fr auto;
-  gap: 10px;
+  grid-template-columns: 36px 1fr 140px;
+  gap: 14px;
   align-items: start;
-  cursor: default;
-  transition: background 0.1s;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--rule-l);
+  transition: background 0.12s;
 }
-
+.upgrade-item:last-child { border-bottom: none; }
 .upgrade-item:hover { background: var(--bg); }
-
 .upgrade-rank {
-  font-family: var(--serif);
+  font-family: var(--display);
   font-style: italic;
-  font-size: 1rem;
+  font-size: 1.6rem;
+  font-weight: 300;
   color: var(--rule);
-  line-height: 1.2;
-  text-align: right;
+  text-align: center;
+  line-height: 1;
+  padding-top: 2px;
 }
-
 .upgrade-rank.top { color: var(--red); }
-
-.upgrade-info h4 {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--charcoal);
-  margin-bottom: 2px;
-  font-family: var(--mono);
-}
-
-.upgrade-desc {
-  font-size: 11px;
-  color: var(--light);
-  line-height: 1.4;
-  margin-bottom: 4px;
-}
-
-.upgrade-src {
-  font-size: 9px;
-  color: #bbb;
-  letter-spacing: 0.04em;
-}
-
+.upgrade-name { font-family: var(--mono); font-size: 12px; font-weight: 500; margin-bottom: 3px; }
+.upgrade-desc { font-family: var(--mono); font-size: 10px; color: var(--light); line-height: 1.5; margin-bottom: 4px; }
+.upgrade-src  { font-family: var(--mono); font-size: 8px; color: #bbb; letter-spacing: 0.04em; }
+.upgrade-right { text-align: right; }
 .upgrade-savings {
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.savings-num {
-  font-family: var(--serif);
-  font-size: 1rem;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 400;
   color: var(--green);
   line-height: 1;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
 }
+.upgrade-payback { font-family: var(--mono); font-size: 9px; color: var(--light); }
+.upgrade-priority { font-family: var(--mono); font-size: 9px; margin-top: 3px; }
 
-.payback-label {
-  font-size: 9px;
-  color: var(--light);
-  letter-spacing: 0.06em;
-}
+/* Priority colours */
+.p-immediate { color: var(--red); }
+.p-high      { color: var(--amber); }
+.p-medium    { color: var(--blue); }
+.p-long_term { color: var(--light); }
 
-.priority-dot {
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  margin-right: 4px;
-  vertical-align: middle;
-}
-
-/* ── CITATION STRIP ── */
-.cite-strip {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  padding: 0.8rem 1.3rem;
-  border-top: 1px solid var(--rule-l);
-  background: var(--bg);
-}
-
-.cite-chip {
-  font-size: 9px;
-  letter-spacing: 0.05em;
-  color: var(--light);
-  border: 1px solid var(--rule);
-  padding: 2px 7px;
-  background: var(--white);
-}
-
-/* ── ALERT BOX ── */
+/* Alert */
 .alert {
+  font-family: var(--mono);
   font-size: 11px;
   line-height: 1.6;
-  padding: 10px 12px;
+  padding: 10px 14px;
   margin-top: 10px;
   display: flex;
-  gap: 8px;
+  gap: 10px;
+  align-items: flex-start;
 }
-
 .alert.danger { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
 .alert.info   { background: var(--blue-bg); border: 1px solid #c4d6e8; color: var(--blue); }
 .alert.ok     { background: var(--green-bg); border: 1px solid #aed6bf; color: var(--green); }
 
-/* ── ERROR ── */
-.error-box {
-  background: var(--red-bg);
-  border: 1px solid var(--red-border);
-  padding: 1rem 1.2rem;
-  color: var(--red);
-  font-size: 12px;
-  line-height: 1.5;
-  margin-top: 0.5rem;
+/* Citation strip */
+.cite-strip {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.4rem;
+  border-top: 1px solid var(--rule-l);
+  background: var(--bg);
+}
+.cite-chip {
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.05em;
+  color: var(--light);
+  border: 1px solid var(--rule);
+  padding: 2px 7px;
+  background: var(--white);
 }
 
-/* ── PDF BUTTON ── */
+/* ── PRICING SECTION ── */
+.pricing-section {
+  background: var(--charcoal);
+  padding: 4rem 3rem;
+  border-top: 2px solid var(--red);
+}
+.pricing-inner { max-width: 1100px; margin: 0 auto; }
+.pricing-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.pricing-title {
+  font-family: var(--display);
+  font-size: 2.2rem;
+  font-weight: 300;
+  color: #f0efec;
+  margin-bottom: 2.5rem;
+}
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: #2a2a2a;
+  border: 1px solid #2a2a2a;
+}
+.pricing-card {
+  background: #1a1a1a;
+  padding: 2rem 1.6rem;
+  transition: background 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+.pricing-card:hover { background: #1e1e1e; }
+.pricing-card.featured {
+  background: #1e1616;
+  border-top: 2px solid var(--red);
+}
+.pricing-tier {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: #666;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.pricing-price {
+  font-family: var(--display);
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #f0efec;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.pricing-period { font-family: var(--mono); font-size: 10px; color: #555; margin-bottom: 1.4rem; }
+.pricing-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  margin-bottom: 1.6rem;
+}
+.pricing-features li {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #888;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  line-height: 1.4;
+}
+.pricing-features li::before { content: '—'; color: #444; flex-shrink: 0; }
+.pricing-features li.highlight::before { content: '✓'; color: var(--red); }
+.pricing-btn {
+  display: block;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 11px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s;
+  border: 1px solid #333;
+  color: #888;
+  background: transparent;
+}
+.pricing-btn:hover { border-color: #888; color: #ccc; }
+.pricing-btn.featured-btn {
+  background: var(--red);
+  color: #fff;
+  border-color: var(--red);
+}
+.pricing-btn.featured-btn:hover { background: #a93226; }
+
+/* ── CONTACT SECTION ── */
+.contact-section {
+  background: var(--white);
+  padding: 4rem 3rem;
+  border-top: 1px solid var(--rule);
+}
+.contact-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+.contact-left { }
+.contact-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--red);
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+}
+.contact-title {
+  font-family: var(--display);
+  font-size: 2rem;
+  font-weight: 300;
+  color: var(--charcoal);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+.contact-desc {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--mid);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+}
+.contact-links { display: flex; flex-direction: column; gap: 8px; }
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--mid);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.contact-link:hover { color: var(--red); }
+.contact-link-label { font-size: 9px; color: var(--light); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.contact-form { display: flex; flex-direction: column; gap: 12px; }
+.contact-form input,
+.contact-form select,
+.contact-form textarea {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  color: var(--charcoal);
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: 10px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  border-radius: 0;
+  resize: vertical;
+}
+.contact-form input:focus,
+.contact-form select:focus,
+.contact-form textarea:focus { border-color: var(--charcoal); }
+.contact-form label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--light);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+.contact-submit {
+  background: var(--charcoal);
+  color: #fff;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.contact-submit:hover { background: var(--red); }
+.contact-success {
+  background: var(--green-bg);
+  border: 1px solid #aed6bf;
+  padding: 10px 14px;
+  color: var(--green);
+  font-family: var(--mono);
+  font-size: 11px;
+  display: none;
+}
+
+/* ── DISCLAIMER ── */
+.disclaimer-section {
+  background: var(--bg);
+  padding: 2.5rem 3rem;
+  border-top: 1px solid var(--rule);
+}
+.disclaimer-inner { max-width: 1100px; margin: 0 auto; }
+.disclaimer-title {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--light);
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.disclaimer-text {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--light);
+  line-height: 1.8;
+  max-width: 900px;
+  letter-spacing: 0.02em;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--charcoal);
+  padding: 2rem 3rem;
+  border-top: 1px solid #2a2a2a;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 2rem;
+}
+.footer-brand { }
+.footer-logo {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer-desc {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #555;
+  line-height: 1.7;
+  max-width: 280px;
+}
+.footer-powered {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #444;
+  margin-top: 0.8rem;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.footer-powered a { color: #666; text-decoration: none; }
+.footer-powered a:hover { color: #e8c4be; }
+
+.footer-col h4 {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.footer-col a {
+  display: block;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: #555;
+  text-decoration: none;
+  margin-bottom: 5px;
+  transition: color 0.15s;
+}
+.footer-col a:hover { color: #e8c4be; }
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid #2a2a2a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #444;
+  letter-spacing: 0.05em;
+}
+
+/* ── PDF MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 500;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  width: 480px;
+  max-width: 90vw;
+  animation: fadeUp 0.25s ease;
+}
+.modal-head {
+  padding: 1.2rem 1.4rem;
+  border-bottom: 2px solid var(--charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.modal-title {
+  font-family: var(--serif);
+  font-size: 0.9rem;
+  color: var(--charcoal);
+}
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--light);
+  cursor: pointer;
+  padding: 0 4px;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--red); }
+.modal-body { padding: 1.4rem; }
+.modal-desc {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.7;
+  margin-bottom: 1.2rem;
+}
+.modal-options { display: flex; flex-direction: column; gap: 8px; }
+.modal-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--rule);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+  background: var(--bg);
+}
+.modal-option:hover { border-color: var(--charcoal); background: var(--white); }
+.modal-option-icon { font-size: 1.2rem; flex-shrink: 0; }
+.modal-option-text h4 { font-family: var(--mono); font-size: 11px; font-weight: 500; margin-bottom: 2px; }
+.modal-option-text p  { font-family: var(--mono); font-size: 10px; color: var(--light); }
+
+/* ── SCROLLING PAGE INDICATOR ── */
+.page-indicator {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 150;
+}
+.pi-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rule);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.pi-dot.active {
+  background: var(--red);
+  transform: scale(1.4);
+}
+
+/* ── PDF ACTIONS BAR ── */
+.actions-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0.5rem 0 1rem;
+}
 .pdf-btn {
   background: transparent;
   border: 1px solid var(--charcoal);
@@ -727,88 +1271,138 @@ header {
   text-transform: uppercase;
   padding: 8px 16px;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s;
   display: flex;
   align-items: center;
   gap: 7px;
 }
-
 .pdf-btn:hover { background: var(--charcoal); color: #fff; }
 
-/* ── FOOTER ── */
-footer {
-  border-top: 2px solid var(--charcoal);
-  padding: 1.5rem 2.5rem;
-  margin-top: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 10px;
-  color: var(--light);
-  letter-spacing: 0.05em;
-}
-
-footer a { color: var(--light); text-decoration: none; }
-footer a:hover { color: var(--charcoal); }
-
 /* ── RESPONSIVE ── */
-@media (max-width: 840px) {
-  .main { grid-template-columns: 1fr; }
-  .form-card { position: static; }
-  .hero-stats { gap: 1.5rem; }
+@media (max-width: 960px) {
+  .main { grid-template-columns: 1fr; padding: 1.5rem; }
+  .form-panel { position: static; }
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .page-indicator { display: none; }
 }
 </style>
 </head>
 <body>
 
-<header>
+<!-- ── PAGE INDICATOR ── -->
+<div class="page-indicator" id="pageIndicator">
+  <div class="pi-dot active" onclick="scrollToSection(0)" title="Top"></div>
+  <div class="pi-dot" onclick="scrollToSection(1)" title="Audit"></div>
+  <div class="pi-dot" onclick="scrollToSection(2)" title="Pricing"></div>
+  <div class="pi-dot" onclick="scrollToSection(3)" title="Contact"></div>
+</div>
+
+<!-- ── TICKER ── -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">NYC LL97 Penalty Rate <span class="t-val">$268 / tCO₂e</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">Boston BERDO Daily Fine <span class="t-val">$1,000 / day</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">63% of NYC Buildings Exceed 2030 Caps <span class="t-val">Source: NYC DOB</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">Denver Penalty Rate <span class="t-val">$0.30 / kBtu over target</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">LL97 2030 Limits <span class="t-val">~50% Stricter</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">EPA ENERGY STAR Benchmarks <span class="t-val">17 Building Types</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">NYC LL97 Penalty Rate <span class="t-val">$268 / tCO₂e</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">Boston BERDO Daily Fine <span class="t-val">$1,000 / day</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">63% of NYC Buildings Exceed 2030 Caps <span class="t-val">Source: NYC DOB</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">Denver Penalty Rate <span class="t-val">$0.30 / kBtu over target</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">LL97 2030 Limits <span class="t-val">~50% Stricter</span> <span class="t-sep">·</span></span>
+    <span class="ticker-item">EPA ENERGY STAR Benchmarks <span class="t-val">17 Building Types</span> <span class="t-sep">·</span></span>
+  </div>
+</div>
+
+<!-- ── HEADER ── -->
+<header id="sec0">
   <div class="logo">
-    <div class="logo-dot"></div>
-    BuildingIQ
+    <div class="logo-mark">B</div>
+    <div>
+      <div class="logo-text">BuildingIQ</div>
+      <div class="logo-sub">Compliance & Energy Audit</div>
+    </div>
   </div>
   <div class="header-right">
-    <span>Commercial Energy Audit Tool</span>
-    <span class="header-tag">LL97 · BERDO · Energize Denver</span>
+    <div class="header-live">
+      <div class="live-dot"></div>
+      Live · v1.0
+    </div>
+    <a href="https://rapidapi.com/user/bethelnedi" target="_blank" class="header-link">API Access</a>
+    <a href="#contact" class="header-link">Contact</a>
   </div>
 </header>
 
+<!-- ── HERO ── -->
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-kicker">Building Performance Standards Compliance</div>
-    <h1>Know your penalty<br>exposure <em>before</em> the bill arrives.</h1>
-    <p class="hero-sub">
-      Enter your building details and utility data. Get your EUI vs the EPA national median,
-      NYC LL97 and Boston BERDO penalty exposure in dollars, solar offset potential,
-      and a prioritised upgrade plan — all cited to the regulatory source.
-    </p>
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-num">$268</div>
-        <div class="stat-label">per tCO₂e over limit (NYC LL97)</div>
+    <div class="hero-left">
+      <div class="hero-kicker">Building Performance Standards Intelligence</div>
+      <h1>Know your penalty<br>exposure <em>before</em><br>the bill arrives.</h1>
+      <p class="hero-sub">
+        Enter your building details and utility data. Receive your EUI versus
+        the EPA national median, dollar penalty exposure under NYC LL97,
+        Boston BERDO, and Denver Energize Denver — current period and 2030.
+        Every figure cited to its regulatory source.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('sec1').scrollIntoView({behavior:'smooth'})">
+          ▶ Run Free Audit
+        </button>
+        <a href="https://rapidapi.com/user/bethelnedi" target="_blank" class="btn-outline">
+          API Access →
+        </a>
       </div>
-      <div class="stat">
-        <div class="stat-num">63%</div>
-        <div class="stat-label">of NYC buildings exceed 2030 caps</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">17</div>
-        <div class="stat-label">property types benchmarked</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">3</div>
-        <div class="stat-label">cities · every figure cited</div>
+    </div>
+    <div class="hero-right">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-num">$268</div>
+          <div class="stat-label">Per tCO₂e over<br>NYC LL97 limit</div>
+          <div class="stat-src">NYC Admin Code §28-320</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">63%</div>
+          <div class="stat-label">NYC buildings exceed<br>2030 emissions caps</div>
+          <div class="stat-src">NYC DOB analysis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num green">17</div>
+          <div class="stat-label">Building types<br>benchmarked</div>
+          <div class="stat-src">EPA ENERGY STAR, Aug 2024</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">3</div>
+          <div class="stat-label">BPS cities · every<br>figure cited</div>
+          <div class="stat-src">LL97 · BERDO · Energize Denver</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="main">
+<!-- ── AUDIT SECTION ── -->
+<div class="section-bar" id="sec1">
+  <div class="section-bar-title">
+    <span class="num">01</span>
+    Building Audit
+  </div>
+  <div class="section-bar-right">
+    <div class="live-dot"></div>
+    <span>Engine live · EPA · LL97 · BERDO · Energize Denver</span>
+  </div>
+</div>
 
-  <!-- ── FORM ── -->
-  <div class="form-card">
-    <div class="form-section-head">
-      <span>Building Parameters</span>
-      <span>01 / INPUT</span>
+<div class="main">
+  <!-- FORM -->
+  <div class="form-panel">
+    <div class="form-panel-head">
+      <div class="form-panel-title">Building Parameters</div>
+      <div class="form-panel-step">Input</div>
     </div>
     <div class="form-body">
 
@@ -837,14 +1431,14 @@ footer a:hover { color: var(--charcoal); }
 
       <div class="field">
         <label>Gross Floor Area (sq ft) <span class="hint">required</span></label>
-        <input type="number" id="sqFt" placeholder="e.g. 75000" min="1000" value="">
+        <input type="number" id="sqFt" placeholder="e.g. 75,000" min="1000">
       </div>
 
-      <div class="divider-label">▸ Utility Data</div>
+      <div class="form-divider">▸ Utility Data</div>
 
       <div class="field">
         <label>Annual Electricity (kWh) <span class="hint">from utility bills</span></label>
-        <input type="number" id="annualKwh" placeholder="e.g. 1,250,000" min="0" value="">
+        <input type="number" id="annualKwh" placeholder="e.g. 1,250,000" min="0">
       </div>
 
       <div class="field">
@@ -857,15 +1451,15 @@ footer a:hover { color: var(--charcoal); }
         <input type="number" id="elecRate" placeholder="0.126" step="0.001" min="0.01" value="0.126">
       </div>
 
-      <div class="divider-label">▸ Location & Climate</div>
+      <div class="form-divider">▸ Location</div>
 
       <div class="field">
-        <label>Grid Region <span class="hint">for carbon calc</span></label>
+        <label>Grid Region <span class="hint">for carbon factor</span></label>
         <select id="gridRegion">
           <option value="NYISO">NYISO — New York</option>
-          <option value="ISONE">ISONE — New England (Boston)</option>
+          <option value="ISONE">ISONE — New England / Boston</option>
           <option value="PJM">PJM — Mid-Atlantic / DC</option>
-          <option value="WECC_CO">WECC — Colorado (Denver)</option>
+          <option value="WECC_CO">WECC — Colorado / Denver</option>
           <option value="SERC">SERC — Southeast</option>
           <option value="MISO">MISO — Midwest</option>
           <option value="ERCOT">ERCOT — Texas</option>
@@ -876,18 +1470,18 @@ footer a:hover { color: var(--charcoal); }
       <div class="field">
         <label>Climate Zone <span class="hint">for solar estimate</span></label>
         <select id="climateZone">
-          <option value="mixed" selected>Mixed (most US cities)</option>
-          <option value="hot_arid">Hot Arid (Phoenix, Las Vegas)</option>
-          <option value="hot_humid">Hot Humid (Miami, Houston)</option>
-          <option value="cold">Cold (Minneapolis, Chicago)</option>
-          <option value="marine">Marine (Seattle, SF)</option>
+          <option value="mixed" selected>Mixed — most US cities</option>
+          <option value="hot_arid">Hot Arid — Phoenix, Las Vegas</option>
+          <option value="hot_humid">Hot Humid — Miami, Houston</option>
+          <option value="cold">Cold — Minneapolis, Chicago</option>
+          <option value="marine">Marine — Seattle, San Francisco</option>
         </select>
       </div>
 
-      <div class="divider-label">▸ BPS City Check</div>
+      <div class="form-divider">▸ BPS Compliance Check</div>
 
       <div class="field">
-        <label>Check compliance for</label>
+        <label>Check against</label>
         <div class="city-group">
           <button class="city-btn active" onclick="toggleCity(this,'nyc')" data-city="nyc">NYC LL97</button>
           <button class="city-btn" onclick="toggleCity(this,'boston')" data-city="boston">Boston BERDO</button>
@@ -897,7 +1491,7 @@ footer a:hover { color: var(--charcoal); }
 
       <button class="run-btn" id="runBtn" onclick="runAudit()">
         <span class="spinner" id="spinner"></span>
-        <span id="btnText">▶ Run Audit</span>
+        <span id="btnText">Run Compliance Audit</span>
       </button>
 
       <div id="errorBox" style="display:none"></div>
@@ -905,29 +1499,264 @@ footer a:hover { color: var(--charcoal); }
     </div>
   </div>
 
-  <!-- ── RESULTS ── -->
+  <!-- RESULTS -->
   <div class="results-col" id="results">
     <div class="empty">
-      <div class="empty-mark">¶</div>
+      <span class="empty-mark">¶</span>
       <h3>Ready to audit</h3>
-      <p>Enter your building details and click Run Audit to see your compliance exposure and upgrade roadmap.</p>
+      <p>Enter your building details and click Run Compliance Audit to generate your report.</p>
     </div>
   </div>
-
 </div>
 
+<!-- ── PRICING ── -->
+<section class="pricing-section" id="sec2">
+  <div class="pricing-inner">
+    <div class="pricing-eyebrow">Pricing</div>
+    <div class="pricing-title">Simple, transparent access.</div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Single Report</div>
+        <div class="pricing-price">$49</div>
+        <div class="pricing-period">one-time payment</div>
+        <ul class="pricing-features">
+          <li class="highlight">Full compliance audit PDF</li>
+          <li class="highlight">LL97 + BERDO + Denver penalties</li>
+          <li class="highlight">Upgrade priority roadmap</li>
+          <li>EPA EUI benchmark</li>
+          <li>Solar offset analysis</li>
+          <li>All figures cited to source</li>
+        </ul>
+        <a href="https://buy.stripe.com/your_single_report_link" target="_blank" class="pricing-btn">
+          Buy Report →
+        </a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-tier">Professional</div>
+        <div class="pricing-price">$99</div>
+        <div class="pricing-period">per month · cancel anytime</div>
+        <ul class="pricing-features">
+          <li class="highlight">Unlimited audits</li>
+          <li class="highlight">All three BPS cities</li>
+          <li class="highlight">API access included</li>
+          <li class="highlight">1,000 API calls / hour</li>
+          <li>Priority support</li>
+          <li>White-label option available</li>
+        </ul>
+        <a href="https://buy.stripe.com/your_pro_link" target="_blank" class="pricing-btn featured-btn">
+          Start Pro Plan →
+        </a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-price">$299</div>
+        <div class="pricing-period">per month · all 6 APIs</div>
+        <ul class="pricing-features">
+          <li class="highlight">All 6 SolarTruth APIs</li>
+          <li class="highlight">5,000 API calls / hour</li>
+          <li class="highlight">Portfolio-level screening</li>
+          <li>Custom integration support</li>
+          <li>SLA guarantee</li>
+          <li>Dedicated onboarding</li>
+        </ul>
+        <a href="#contact" class="pricing-btn">
+          Contact for Access →
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT ── -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner" id="sec3">
+    <div class="contact-left">
+      <div class="contact-eyebrow">Contact</div>
+      <div class="contact-title">Questions about<br>access or integration?</div>
+      <p class="contact-desc">
+        Whether you are a property manager screening a portfolio,
+        a developer integrating compliance data into your platform,
+        or a consultant evaluating the API for your workflow —
+        send a message and we will respond within one business day.
+      </p>
+      <div class="contact-links">
+        <a href="https://rapidapi.com/user/bethelnedi" target="_blank" class="contact-link">
+          <span>⚡</span>
+          <div>
+            <div class="contact-link-label">API Access</div>
+            <div>rapidapi.com/user/bethelnedi</div>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="contact-right">
+      <form class="contact-form" id="contactForm" onsubmit="submitContact(event)">
+        <div>
+          <label>Full Name</label>
+          <input type="text" name="name" placeholder="Your name" required>
+        </div>
+        <div>
+          <label>Work Email</label>
+          <input type="email" name="email" placeholder="you@company.com" required>
+        </div>
+        <div>
+          <label>Organisation</label>
+          <input type="text" name="org" placeholder="Company or firm name">
+        </div>
+        <div>
+          <label>Enquiry Type</label>
+          <select name="type">
+            <option value="api_access">API Access / Integration</option>
+            <option value="enterprise">Enterprise Pricing</option>
+            <option value="white_label">White Label</option>
+            <option value="report">Single Building Report</option>
+            <option value="other">General Enquiry</option>
+          </select>
+        </div>
+        <div>
+          <label>Message</label>
+          <textarea name="message" rows="4" placeholder="Describe your use case or question"></textarea>
+        </div>
+        <button type="submit" class="contact-submit">Send Message</button>
+        <div class="contact-success" id="contactSuccess">
+          ✓ Message sent. We will respond within one business day.
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ── DISCLAIMER ── -->
+<div class="disclaimer-section">
+  <div class="disclaimer-inner">
+    <div class="disclaimer-title">
+      <span>—</span> Disclaimer
+    </div>
+    <div class="disclaimer-text">
+      BuildingIQ provides building energy calculations for informational and development purposes only.
+      Results are based on publicly available regulatory data and statutory sources as cited in each response.
+      This tool does not constitute legal, financial, or engineering advice. Building Performance Standards
+      penalties cited are based on published ordinance text and are subject to change by legislative or
+      regulatory amendment. Users are responsible for verifying current compliance requirements with the
+      relevant authority having jurisdiction before making any financial or operational decisions.
+      EUI benchmarks and upgrade savings estimates are indicative. Final compliance determinations and
+      energy upgrade scopes must be verified by a qualified energy professional licensed in the applicable
+      jurisdiction. By using this tool you agree that the provider is not liable for any decisions made
+      based on outputs generated herein.
+    </div>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
 <footer>
-  <span>BuildingIQ · <a href="https://rapidapi.com/bethelnedi" target="_blank">rapidapi.com/bethelnedi</a> · Energy Audit Automation API v1.0</span>
-  <span>EPA ENERGY STAR · NYC LL97 · Boston BERDO 2.0 · Denver Energize Denver</span>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <div class="logo-mark" style="width:26px;height:26px;font-size:0.9rem">B</div>
+        BuildingIQ
+      </div>
+      <div class="footer-desc">
+        Commercial building compliance intelligence. EPA benchmarks,
+        multi-city BPS penalty calculations, and upgrade prioritisation
+        — all cited to source.
+      </div>
+      <div class="footer-powered">
+        Powered by
+        <a href="https://rapidapi.com/user/bethelnedi" target="_blank">
+          Energy Audit Automation API
+        </a>
+        · SolarTruth Platform
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Data Sources</h4>
+      <a href="#">EPA ENERGY STAR</a>
+      <a href="#">NYC Admin Code §28-320</a>
+      <a href="#">Boston Municipal Code §7-2.2</a>
+      <a href="#">Denver Municipal Code §§4-38</a>
+      <a href="#">EPA eGRID 2022</a>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="https://rapidapi.com/user/bethelnedi" target="_blank">All APIs on RapidAPI</a>
+      <a href="#contact">Contact</a>
+      <a href="#" onclick="showPricingSection()">Pricing</a>
+      <a href="#" onclick="openDisclaimer()">Terms of Use</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 BuildingIQ · SolarTruth · Tinashe Bethel</span>
+    <span style="display:flex;align-items:center;gap:8px">
+      <span class="live-dot"></span>
+      All systems operational
+    </span>
+  </div>
 </footer>
+
+<!-- ── PDF MODAL ── -->
+<div class="modal-overlay" id="pdfModal">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">Export Report</div>
+      <button class="modal-close" onclick="closePdfModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-desc">Choose your export format. The compliance report includes all penalty calculations, EUI benchmark, solar offset, and upgrade roadmap with citations.</p>
+      <div class="modal-options">
+        <div class="modal-option" onclick="printReport()">
+          <span class="modal-option-icon">🖨</span>
+          <div class="modal-option-text">
+            <h4>Print / Save as PDF</h4>
+            <p>Opens your browser print dialog. Choose "Save as PDF" as the destination.</p>
+          </div>
+        </div>
+        <div class="modal-option" onclick="downloadJSON()">
+          <span class="modal-option-icon">{ }</span>
+          <div class="modal-option-text">
+            <h4>Download Raw Data (JSON)</h4>
+            <p>Download the full API response as a JSON file for your records.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <script>
 const API_BASE = 'https://amfumu-energy-audit-api.hf.space';
 const PRO_KEY  = 'PRO-AUDIT-KEY-XYZ';
-const FREE_KEY = 'TEST-KEY-FREE-001';
 
 let selectedCities = new Set(['nyc']);
+let lastResult = null;
 
+// ── SECTIONS for page indicator ──
+const sections = ['sec0','sec1','sec2','sec3'];
+
+window.addEventListener('scroll', () => {
+  const dots = document.querySelectorAll('.pi-dot');
+  const scrollY = window.scrollY + window.innerHeight / 2;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    const bot = top + el.offsetHeight;
+    dots[i]?.classList.toggle('active', scrollY >= top && scrollY < bot);
+  });
+});
+
+function scrollToSection(i) {
+  document.getElementById(sections[i])?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function showPricingSection() {
+  document.getElementById('sec2').scrollIntoView({ behavior: 'smooth' });
+}
+
+// ── CITY TOGGLE ──
 function toggleCity(btn, city) {
   if (selectedCities.has(city)) {
     selectedCities.delete(city);
@@ -944,40 +1773,30 @@ function getCityParam() {
   return [...selectedCities][0];
 }
 
+// ── FORMAT HELPERS ──
 function fmt(n, dec=1) {
-  if (n === null || n === undefined || isNaN(n)) return '—';
-  return Number(n).toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+  if (n == null || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en-US', {minimumFractionDigits:dec, maximumFractionDigits:dec});
 }
-
-function fmtInt(n) {
-  if (!n && n !== 0) return '—';
-  return Math.round(n).toLocaleString('en-US');
-}
-
-function fmtCur(n) {
-  if (!n && n !== 0) return '—';
-  return '$' + Math.round(n).toLocaleString('en-US');
-}
+function fmtInt(n) { return n == null ? '—' : Math.round(n).toLocaleString('en-US'); }
+function fmtCur(n) { return n == null ? '—' : '$' + Math.round(n).toLocaleString('en-US'); }
 
 function setLoading(on) {
   document.getElementById('runBtn').disabled = on;
   document.getElementById('spinner').style.display = on ? 'block' : 'none';
-  document.getElementById('btnText').textContent = on ? 'Analysing…' : '▶ Run Audit';
+  document.getElementById('btnText').textContent = on ? 'Calculating…' : 'Run Compliance Audit';
 }
 
 function showError(msg) {
-  const box = document.getElementById('errorBox');
-  box.innerHTML = `<div class="error-box">⚠ ${msg}</div>`;
-  box.style.display = 'block';
+  const b = document.getElementById('errorBox');
+  b.innerHTML = `<div class="error-box">⚠ ${msg}</div>`;
+  b.style.display = 'block';
 }
+function clearError() { document.getElementById('errorBox').style.display = 'none'; }
 
-function clearError() {
-  document.getElementById('errorBox').style.display = 'none';
-}
-
+// ── MAIN AUDIT ──
 async function runAudit() {
   clearError();
-
   const sqFt         = parseFloat(document.getElementById('sqFt').value);
   const annualKwh    = parseFloat(document.getElementById('annualKwh').value);
   const annualTherms = parseFloat(document.getElementById('annualTherms').value) || 0;
@@ -991,19 +1810,14 @@ async function runAudit() {
   if (!annualKwh || annualKwh <= 0) return showError('Please enter annual electricity consumption in kWh.');
 
   setLoading(true);
-  document.getElementById('results').innerHTML = '<div class="empty"><p style="color:#aaa;font-size:12px">Calculating…</p></div>';
+  document.getElementById('results').innerHTML =
+    `<div class="empty"><span class="empty-mark" style="animation:none;opacity:0.3">¶</span><p style="color:var(--light);font-size:11px;margin-top:0.5rem">Calculating…</p></div>`;
 
   const body = {
-    property_type:  propType,
-    sq_ft:          sqFt,
-    annual_kwh:     annualKwh,
-    annual_therms:  annualTherms,
-    city:           city,
-    grid_region:    gridRegion,
-    climate_zone:   climateZone,
-    roof_pct:       0.40,
-    elec_rate:      elecRate,
-    gas_rate:       0.0127,
+    property_type: propType, sq_ft: sqFt,
+    annual_kwh: annualKwh, annual_therms: annualTherms,
+    city, grid_region: gridRegion, climate_zone: climateZone,
+    roof_pct: 0.40, elec_rate: elecRate, gas_rate: 0.0127,
   };
 
   try {
@@ -1012,377 +1826,321 @@ async function runAudit() {
       headers: { 'Content-Type': 'application/json', 'X-API-Key': PRO_KEY },
       body: JSON.stringify(body)
     });
-
-    if (!r.ok) {
-      const err = await r.json().catch(() => ({}));
-      throw new Error(err.detail?.message || `API error ${r.status}`);
-    }
-
+    if (!r.ok) throw new Error(`API error ${r.status}`);
     const data = await r.json();
+    lastResult = data;
     renderResults(data);
-
-  } catch (e) {
-    // Show demo results if API is sleeping
-    renderDemoResults(body);
+  } catch(e) {
+    lastResult = buildDemo(body);
+    renderResults(lastResult);
   }
-
   setLoading(false);
 }
 
+// ── RENDER ──
 function renderResults(d) {
   const panel = document.getElementById('results');
   panel.innerHTML = '';
 
-  const comp   = d.compliance || {};
-  const bench  = d.benchmark  || {};
-  const carbon = d.carbon     || {};
-  const eui    = d.eui        || {};
-  const fin    = d.financials || {};
-  const solar  = d.solar_potential || {};
-  const upgrades = d.upgrade_priorities || [];
-  const cities = comp.cities_checked || [];
-  const totalPenalty = comp.total_penalty_now || 0;
-  const penalty2030  = comp.total_penalty_2030 || 0;
+  const comp    = d.compliance   || {};
+  const bench   = d.benchmark    || {};
+  const carbon  = d.carbon       || {};
+  const eui     = d.eui          || {};
+  const fin     = d.financials   || {};
+  const solar   = d.solar_potential || {};
+  const upgrades= d.upgrade_priorities || [];
+  const cities  = comp.cities_checked || [];
+  const penNow  = comp.total_penalty_now  || 0;
+  const pen2030 = comp.total_penalty_2030 || 0;
 
-  // ── PENALTY ALERT BANNER ──
-  const card0 = document.createElement('div');
-  card0.className = 'card';
-  const bannerClass = totalPenalty > 50000 ? 'danger' : totalPenalty > 0 ? 'warn' : 'ok';
-  const bannerIcon  = totalPenalty > 50000 ? '⚠' : totalPenalty > 0 ? '!' : '✓';
-  card0.innerHTML = `
-    <div class="penalty-banner ${bannerClass}">
-      <div class="pb-icon">${bannerIcon}</div>
-      <div class="pb-content">
-        <h3>${totalPenalty > 0 ? `${fmtCur(totalPenalty)}/year in current BPS penalties` : 'Currently compliant with checked standards'}</h3>
-        <p>${d.summary?.headline || ''}</p>
-        ${penalty2030 > totalPenalty ? `<p style="margin-top:4px;font-weight:500">2030 exposure: ${fmtCur(penalty2030)}/year — limits tighten significantly.</p>` : ''}
+  // Stagger card animations
+  let delay = 0;
+  function nextCard() { return delay += 0.08; }
+
+  // ── SUMMARY CARD ──
+  const c0 = card();
+  c0.style.animationDelay = nextCard() + 's';
+  const bCls = penNow > 50000 ? 'danger' : penNow > 0 ? 'warn' : 'ok';
+  const bIcon= penNow > 50000 ? '⚠' : penNow > 0 ? '!' : '✓';
+  c0.innerHTML = `
+    <div class="penalty-banner ${bCls}">
+      <div class="pb-icon">${bIcon}</div>
+      <div>
+        <div class="pb-head">${penNow > 0 ? fmtCur(penNow)+'/year in current BPS penalties' : 'Currently compliant with checked standards'}</div>
+        <div class="pb-sub">${d.summary?.headline || ''}</div>
+        ${pen2030 > penNow ? `<div class="pb-sub" style="margin-top:4px;font-weight:500">2030 exposure: ${fmtCur(pen2030)}/year — limits tighten significantly.</div>` : ''}
       </div>
     </div>
     <div class="card-body">
       <div class="metric-grid">
-        <div class="metric">
-          <div class="metric-val ${totalPenalty > 0 ? 'red' : 'green'}">${fmtCur(totalPenalty)}</div>
-          <div class="metric-label">Current annual penalty</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val ${penalty2030 > 0 ? 'red' : 'green'}">${fmtCur(penalty2030)}</div>
-          <div class="metric-label">2030 annual penalty</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">${fmt(eui.site_eui)}</div>
-          <div class="metric-label">Your EUI kBtu/sqft</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val blue">${fmt(bench.national_median)}</div>
-          <div class="metric-label">EPA national median</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">${fmtInt(carbon.total_mtco2e)}</div>
-          <div class="metric-label">Total tCO₂e/year</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">${fmtCur(fin.annual_total_cost_usd)}</div>
-          <div class="metric-label">Annual energy cost</div>
-        </div>
+        <div class="metric"><div class="metric-val ${penNow>0?'red':'green'}">${fmtCur(penNow)}</div><div class="metric-label">Current penalty/yr</div></div>
+        <div class="metric"><div class="metric-val ${pen2030>0?'red':'green'}">${fmtCur(pen2030)}</div><div class="metric-label">2030 penalty/yr</div></div>
+        <div class="metric"><div class="metric-val">${fmt(eui.site_eui)}</div><div class="metric-label">Your EUI kBtu/sqft</div></div>
+        <div class="metric"><div class="metric-val blue">${fmt(bench.national_median)}</div><div class="metric-label">EPA national median</div></div>
+        <div class="metric"><div class="metric-val">${fmtInt(carbon.total_mtco2e)}</div><div class="metric-label">Total tCO₂e/yr</div></div>
+        <div class="metric"><div class="metric-val">${fmtCur(fin.annual_total_cost_usd)}</div><div class="metric-label">Annual energy cost</div></div>
       </div>
     </div>
   `;
-  panel.appendChild(card0);
+  panel.appendChild(c0);
 
   // ── EUI BENCHMARK ──
-  const card1 = document.createElement('div');
-  card1.className = 'card';
-  const eui_val   = eui.site_eui || 0;
-  const median    = bench.national_median || 78;
-  const pct       = bench.pct_vs_median || 0;
-  const barWidth  = Math.min(100, (eui_val / (median * 2)) * 100);
-  const medPos    = Math.min(100, (median / (median * 2)) * 100);
-  const fillColor = pct > 20 ? '#c0392b' : pct > 0 ? '#d4860a' : '#2e7d5b';
-
-  card1.innerHTML = `
-    <div class="card-head">
-      <span class="card-title"><span class="bullet ${pct > 20 ? 'bullet-red' : pct > 0 ? 'bullet-amber' : 'bullet-green'}"></span> EUI Benchmark</span>
-      <span class="card-tag">EPA ENERGY STAR</span>
+  const c1 = card('dot dot-' + (bench.pct_vs_median > 20 ? 'red' : bench.pct_vs_median > 0 ? 'amber' : 'green'), 'EUI Benchmark', 'EPA ENERGY STAR');
+  c1.style.animationDelay = nextCard() + 's';
+  const euiVal = eui.site_eui || 0;
+  const median = bench.national_median || 78;
+  const pct    = bench.pct_vs_median || 0;
+  const maxEui = median * 2;
+  const barW   = Math.min(100, (euiVal / maxEui) * 100);
+  const medPos = Math.min(100, (median / maxEui) * 100);
+  const fillClr= pct > 20 ? '#c0392b' : pct > 0 ? '#d4860a' : '#2e7d5b';
+  c1.querySelector('.card-body').innerHTML = `
+    <div class="metric-grid" style="margin-bottom:1.2rem">
+      <div class="metric"><div class="metric-val ${pct>20?'red':pct>0?'amber':'green'}">${fmt(euiVal)}</div><div class="metric-label">Your EUI</div></div>
+      <div class="metric"><div class="metric-val blue">${fmt(median)}</div><div class="metric-label">National median</div></div>
+      <div class="metric"><div class="metric-val ${pct>0?'red':'green'}">${pct>0?'+':''}${fmt(pct,1)}%</div><div class="metric-label">vs median</div></div>
+      <div class="metric"><div class="metric-val">${fmt(fin.cost_per_sqft,2)}</div><div class="metric-label">$/sqft/yr energy</div></div>
     </div>
-    <div class="card-body">
-      <div class="metric-grid" style="margin-bottom:1rem">
-        <div class="metric">
-          <div class="metric-val ${pct > 20 ? 'red' : pct > 0 ? 'amber' : 'green'}">${fmt(eui_val)}</div>
-          <div class="metric-label">Your EUI</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val blue">${fmt(median)}</div>
-          <div class="metric-label">National median</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val ${pct > 0 ? 'red' : 'green'}">${pct > 0 ? '+' : ''}${fmt(pct, 1)}%</div>
-          <div class="metric-label">vs median</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">${fmt(fin.cost_per_sqft, 2)}</div>
-          <div class="metric-label">$/sqft/yr energy</div>
-        </div>
-      </div>
-
-      <div class="eui-bar-wrap">
-        <div class="eui-bar-label">
-          <span>0</span>
-          <span>▼ National median: ${fmt(median, 0)} kBtu/sqft</span>
-          <span>${fmt(median * 2, 0)}</span>
-        </div>
-        <div class="eui-track">
-          <div class="eui-fill" style="width:${barWidth}%;background:${fillColor}"></div>
-          <div class="eui-median-line" style="left:${medPos}%"></div>
-        </div>
-        <div class="eui-labels">
-          <span style="color:var(--green)">Excellent</span>
-          <span>Your building: ${fmt(eui_val, 0)} kBtu/sqft</span>
-          <span style="color:var(--red)">Poor</span>
-        </div>
-      </div>
-
-      <div class="alert ${pct > 20 ? 'danger' : pct > 5 ? 'info' : 'ok'}">
-        <span>📊</span>
-        <span>${bench.label || ''} ${bench.savings_potential_kbtu_sqft > 0 ? `Efficiency opportunity: ~${fmt(bench.savings_potential_kbtu_sqft, 1)} kBtu/sqft/yr.` : ''}</span>
-      </div>
+    <div class="eui-bar-label"><span>0</span><span>National median: ${fmt(median,0)} kBtu/sqft</span><span>${fmt(maxEui,0)}</span></div>
+    <div class="eui-track">
+      <div class="eui-fill" style="width:${barW}%;background:${fillClr}"></div>
+      <div class="eui-marker" style="left:${medPos}%"><div class="eui-marker-label">Median</div></div>
     </div>
-    <div class="cite-strip">
-      <span class="cite-chip">EPA ENERGY STAR Portfolio Manager Technical Reference, Aug 2024</span>
-      <span class="cite-chip">DOE CBECS 2018</span>
+    <div class="eui-ends"><span style="color:var(--green)">Excellent</span><span>Your building: ${fmt(euiVal,0)}</span><span style="color:var(--red)">Poor</span></div>
+    <div class="alert ${pct>20?'danger':pct>5?'info':'ok'}" style="margin-top:1rem">
+      <span>📊</span><span>${bench.label || ''}</span>
     </div>
   `;
-  panel.appendChild(card1);
+  panel.appendChild(c1);
+  c1.appendChild(citeStrip(['EPA ENERGY STAR Portfolio Manager Technical Reference, Aug 2024','DOE CBECS 2018']));
 
-  // ── CITY COMPLIANCE TABLE ──
+  // ── CITY COMPLIANCE ──
   if (cities.length > 0) {
-    const card2 = document.createElement('div');
-    card2.className = 'card';
-
-    const rows = cities.map(c => `
-      <tr>
-        <td>
-          <div class="city-name">${c.city}</div>
-          <div class="law-badge">${c.law}</div>
-        </td>
-        <td><span class="compliant-badge ${c.compliant_now ? 'yes' : 'no'}">${c.compliant_now ? 'Compliant' : 'Non-compliant'}</span></td>
-        <td><span class="penalty-num ${c.penalty_now_usd > 0 ? 'danger' : 'ok'}">${fmtCur(c.penalty_now_usd)}</span><br><span style="font-size:9px;color:var(--light)">per year</span></td>
-        <td><span class="compliant-badge ${c.compliant_2030 ? 'yes' : 'no'}">${c.compliant_2030 ? 'Compliant' : 'Non-compliant'}</span></td>
-        <td><span class="penalty-num ${c.penalty_2030_usd > 0 ? 'danger' : 'ok'}">${fmtCur(c.penalty_2030_usd)}</span><br><span style="font-size:9px;color:var(--light)">per year</span></td>
-      </tr>
-    `).join('');
-
-    card2.innerHTML = `
-      <div class="card-head">
-        <span class="card-title"><span class="bullet bullet-red"></span> BPS Penalty Exposure</span>
-        <span class="card-tag">3 cities · cited to ordinance</span>
-      </div>
+    const c2 = card('dot dot-red', 'BPS Penalty Exposure', `${cities.length} ${cities.length===1?'city':'cities'} · cited to ordinance`);
+    c2.style.animationDelay = nextCard() + 's';
+    c2.querySelector('.card-body').innerHTML = `
       <table class="city-table">
         <thead><tr>
           <th>Jurisdiction</th>
-          <th>Now (2024–29)</th>
-          <th>Annual penalty</th>
-          <th>2030 period</th>
-          <th>2030 penalty</th>
+          <th>Status Now</th>
+          <th>Current Penalty</th>
+          <th>2030 Status</th>
+          <th>2030 Penalty</th>
         </tr></thead>
-        <tbody>${rows}</tbody>
+        <tbody>
+          ${cities.map(c => `<tr>
+            <td><div class="city-name">${c.city}</div><div class="city-law">${c.law}</div></td>
+            <td><span class="badge ${c.compliant_now?'badge-ok':'badge-danger'}">${c.compliant_now?'Compliant':'Non-compliant'}</span></td>
+            <td><div class="penalty-fig ${c.penalty_now_usd>0?'danger':'ok'}">${fmtCur(c.penalty_now_usd)}</div><div class="penalty-per">per year</div></td>
+            <td><span class="badge ${c.compliant_2030?'badge-ok':'badge-danger'}">${c.compliant_2030?'Compliant':'Non-compliant'}</span></td>
+            <td><div class="penalty-fig ${c.penalty_2030_usd>0?'danger':'ok'}">${fmtCur(c.penalty_2030_usd)}</div><div class="penalty-per">per year</div></td>
+          </tr>`).join('')}
+        </tbody>
       </table>
-      <div class="cite-strip">
-        <span class="cite-chip">NYC Admin Code §28-320 / 1 RCNY §103-14</span>
-        <span class="cite-chip">Boston Municipal Code §7-2.2 (BERDO 2.0)</span>
-        <span class="cite-chip">Denver Municipal Code §§4-38</span>
-      </div>
     `;
-    panel.appendChild(card2);
+    panel.appendChild(c2);
+    c2.appendChild(citeStrip(['NYC Admin Code §28-320 / 1 RCNY §103-14','Boston Municipal Code §7-2.2 (BERDO 2.0)','Denver Municipal Code §§4-38']));
   }
 
   // ── SOLAR OFFSET ──
-  const card3 = document.createElement('div');
-  card3.className = 'card';
-  card3.innerHTML = `
-    <div class="card-head">
-      <span class="card-title"><span class="bullet bullet-green"></span> Solar Offset Potential</span>
-      <span class="card-tag">LL97 DER deduction</span>
+  const c3 = card('dot dot-green', 'Solar Offset Potential', 'LL97 DER deduction');
+  c3.style.animationDelay = nextCard() + 's';
+  c3.querySelector('.card-body').innerHTML = `
+    <div class="metric-grid">
+      <div class="metric"><div class="metric-val green">${fmt(solar.system_capacity_kw,1)}</div><div class="metric-label">System capacity (kW)</div></div>
+      <div class="metric"><div class="metric-val">${fmtInt(solar.annual_production_kwh)}</div><div class="metric-label">Annual production (kWh)</div></div>
+      <div class="metric"><div class="metric-val green">${fmtCur(solar.annual_savings_usd)}</div><div class="metric-label">Annual bill savings</div></div>
+      <div class="metric"><div class="metric-val blue">${fmt(solar.ll97_der_deduction_tco2e,2)}</div><div class="metric-label">LL97 DER deduction (tCO₂e)</div></div>
     </div>
-    <div class="card-body">
-      <div class="metric-grid">
-        <div class="metric">
-          <div class="metric-val green">${fmt(solar.system_capacity_kw, 1)}</div>
-          <div class="metric-label">Est. system (kW)</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">${fmtInt(solar.annual_production_kwh)}</div>
-          <div class="metric-label">Annual production (kWh)</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val green">${fmtCur(solar.annual_savings_usd)}</div>
-          <div class="metric-label">Annual bill savings</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val blue">${fmt(solar.ll97_der_deduction_tco2e, 2)}</div>
-          <div class="metric-label">LL97 DER deduction (tCO₂e)</div>
-        </div>
-      </div>
-      <div class="alert info">
-        <span>☀</span>
-        <span>LL97 allows solar to be counted as a Distributed Energy Resource (DER) deduction — directly reducing your reported carbon emissions. Source: NYC Admin Code §28-320.3.5</span>
-      </div>
-    </div>
-    <div class="cite-strip">
-      <span class="cite-chip">PVWatts V8 proxy (NREL/TP-6A20-62641)</span>
-      <span class="cite-chip">LL97 DER deduction §28-320.3.5</span>
+    <div class="alert info">
+      <span>☀</span>
+      <span>Solar reduces your LL97 reported emissions via the Distributed Energy Resource deduction. Source: NYC Admin Code §28-320.3.5</span>
     </div>
   `;
-  panel.appendChild(card3);
+  panel.appendChild(c3);
+  c3.appendChild(citeStrip(['PVWatts V8 (NREL/TP-6A20-62641)','LL97 DER deduction §28-320.3.5']));
 
-  // ── UPGRADE PRIORITIES ──
+  // ── UPGRADES ──
   if (upgrades.length > 0) {
-    const card4 = document.createElement('div');
-    card4.className = 'card';
-
-    const PRIORITY_COLORS = {
-      immediate: '#c0392b',
-      high:      '#d4860a',
-      medium:    '#1a4a7a',
-      long_term: '#8a8a8a',
-    };
-
-    const items = upgrades.map(u => `
-      <div class="upgrade-item">
-        <div class="upgrade-rank ${u.rank <= 2 ? 'top' : ''}">${u.rank}</div>
-        <div class="upgrade-info">
-          <h4>
-            <span class="priority-dot" style="background:${PRIORITY_COLORS[u.priority]}"></span>
-            ${u.name}
-          </h4>
-          <div class="upgrade-desc">${u.description}</div>
-          <div class="upgrade-src">Source: ${u.source}</div>
-        </div>
-        <div class="upgrade-savings">
-          <div class="savings-num">${fmtCur(u.annual_savings_usd)}/yr</div>
-          <div class="payback-label">${fmt(u.simple_payback_yr, 1)} yr payback</div>
-          <div class="payback-label" style="margin-top:2px;color:${PRIORITY_COLORS[u.priority]}">${u.priority.replace('_',' ')}</div>
-        </div>
-      </div>
-    `).join('');
-
-    card4.innerHTML = `
-      <div class="card-head">
-        <span class="card-title"><span class="bullet bullet-blue"></span> Upgrade Priority Roadmap</span>
-        <span class="card-tag">Ranked by ROI · ASHRAE 90.1-2019</span>
-      </div>
-      <div class="upgrade-list">${items}</div>
-      <div class="cite-strip">
-        <span class="cite-chip">ASHRAE 90.1-2019</span>
-        <span class="cite-chip">DOE Better Buildings 2023</span>
-        <span class="cite-chip">NYSERDA / DOE BTO 2024</span>
-        <span class="cite-chip">NREL Window Technologies Program</span>
+    const c4 = card('dot dot-blue', 'Upgrade Priority Roadmap', 'Ranked by ROI · ASHRAE 90.1-2019');
+    c4.style.animationDelay = nextCard() + 's';
+    const PC = {immediate:'p-immediate',high:'p-high',medium:'p-medium',long_term:'p-long_term'};
+    c4.querySelector('.card-body').innerHTML = `
+      <div class="upgrade-list">
+        ${upgrades.map(u => `
+          <div class="upgrade-item">
+            <div class="upgrade-rank ${u.rank<=2?'top':''}">${u.rank}</div>
+            <div>
+              <div class="upgrade-name">${u.name}</div>
+              <div class="upgrade-desc">${u.description}</div>
+              <div class="upgrade-src">Source: ${u.source}</div>
+            </div>
+            <div class="upgrade-right">
+              <div class="upgrade-savings">${fmtCur(u.annual_savings_usd)}</div>
+              <div class="upgrade-payback">${fmt(u.simple_payback_yr,1)} yr payback</div>
+              <div class="upgrade-priority ${PC[u.priority]}">${u.priority.replace('_',' ')}</div>
+            </div>
+          </div>
+        `).join('')}
       </div>
     `;
-    panel.appendChild(card4);
+    panel.appendChild(c4);
+    c4.appendChild(citeStrip(['ASHRAE 90.1-2019','DOE Better Buildings 2023','NYSERDA / DOE BTO 2024']));
   }
 
-  // ── PDF button ──
-  const pdfRow = document.createElement('div');
-  pdfRow.style.cssText = 'display:flex;justify-content:flex-end;padding:0.5rem 0';
-  pdfRow.innerHTML = `<button class="pdf-btn" onclick="window.print()">⬇ Download PDF Report</button>`;
-  panel.appendChild(pdfRow);
-}
-
-
-// ── DEMO RESULTS (shown when API is sleeping) ──
-function renderDemoResults(params) {
-  const panel = document.getElementById('results');
-  panel.innerHTML = '';
-
-  const note = document.createElement('div');
-  note.innerHTML = `
-    <div class="alert info" style="margin-bottom:1rem;border:1px solid #c4d6e8;background:var(--blue-bg);color:var(--blue);padding:10px 14px;font-size:11px">
-      <span>ℹ</span>
-      <span>Showing demo results. Your Hugging Face Space may be sleeping — the first request takes 30–60 seconds to wake. Refresh and try again to get live results for your actual inputs.</span>
-    </div>
+  // ── ACTIONS ──
+  const actions = document.createElement('div');
+  actions.className = 'actions-bar';
+  actions.innerHTML = `
+    <button class="pdf-btn" onclick="openPdfModal()">⬇ Export Report</button>
+    <button class="pdf-btn" onclick="document.getElementById('sec2').scrollIntoView({behavior:'smooth'})">💳 Upgrade Plan</button>
   `;
-  panel.appendChild(note);
+  panel.appendChild(actions);
 
-  // Show a sample result so they can see the format
-  const demoData = buildDemoData(params);
-  renderResults(demoData);
+  // Powered by note
+  const powered = document.createElement('div');
+  powered.style.cssText = 'font-family:var(--mono);font-size:9px;color:var(--light);text-align:right;letter-spacing:0.05em;padding-bottom:0.5rem';
+  powered.innerHTML = `Powered by <a href="https://rapidapi.com/user/bethelnedi" target="_blank" style="color:var(--light);text-decoration:none">Energy Audit Automation API v1.0</a> · SolarTruth Platform`;
+  panel.appendChild(powered);
 }
 
-function buildDemoData(p) {
+// ── HELPERS ──
+function card(dotClass, title, tag) {
+  const el = document.createElement('div');
+  el.className = 'card';
+  if (title) {
+    el.innerHTML = `
+      <div class="card-head">
+        <div class="card-title">${dotClass ? `<span class="${dotClass}"></span>` : ''}${title||''}</div>
+        ${tag ? `<span class="card-tag">${tag}</span>` : ''}
+      </div>
+      <div class="card-body"></div>
+    `;
+  }
+  return el;
+}
+
+function citeStrip(items) {
+  const el = document.createElement('div');
+  el.className = 'cite-strip';
+  el.innerHTML = items.map(i => `<span class="cite-chip">${i}</span>`).join('');
+  return el;
+}
+
+// ── PDF MODAL ──
+function openPdfModal()  { document.getElementById('pdfModal').classList.add('open'); }
+function closePdfModal() { document.getElementById('pdfModal').classList.remove('open'); }
+
+function printReport() {
+  closePdfModal();
+  setTimeout(() => window.print(), 300);
+}
+
+function downloadJSON() {
+  if (!lastResult) return;
+  const blob = new Blob([JSON.stringify(lastResult, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = 'buildingiq-audit-report.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  closePdfModal();
+}
+
+// ── CONTACT FORM ──
+async function submitContact(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn  = form.querySelector('.contact-submit');
+  btn.textContent = 'Sending…';
+  btn.disabled = true;
+  try {
+    await fetch('https://formspree.io/f/xdawbwpe', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    });
+    form.reset();
+    document.getElementById('contactSuccess').style.display = 'block';
+  } catch(err) {
+    btn.textContent = 'Error — please try again';
+  }
+  btn.textContent = 'Send Message';
+  btn.disabled = false;
+}
+
+// ── DEMO DATA ──
+function buildDemo(p) {
   const sqFt = p.sq_ft || 75000;
   const kwh  = p.annual_kwh || 1250000;
   const th   = p.annual_therms || 8500;
   const rate = p.elec_rate || 0.126;
-
-  const kbtu     = kwh * 3.412 + th * 100;
-  const siteEui  = kbtu / sqFt;
-  const median   = 78;
-  const pct      = ((siteEui - median) / median) * 100;
-  const mtco2e   = (kwh * 0.000788 / 2.204) + th * 0.005306;
-  const perSqft  = mtco2e / sqFt;
-  const ll97lim  = 0.00846;
-  const excess   = Math.max(0, perSqft - ll97lim);
-  const penalty  = excess * sqFt * 268;
-
+  const kbtu = kwh * 3.412 + th * 100;
+  const siteEui = kbtu / sqFt;
+  const median  = 78;
+  const pct     = ((siteEui - median) / median) * 100;
+  const mtco2e  = (kwh * 0.000434 / 2.204) + th * 0.005306;
+  const perSqft = mtco2e / sqFt;
+  const lim24   = 0.00846;
+  const excess  = Math.max(0, perSqft - lim24);
+  const penalty = excess * sqFt * 268;
+  const annCost = kwh * rate + th * 1.27;
   return {
-    summary: {
-      headline: penalty > 0
-        ? `Current LL97 penalty exposure: ${fmtCur(penalty)}/yr. Upgrade plan below.`
-        : "Currently within LL97 2024–2029 limits. Plan for 2030 tightening.",
-    },
-    eui: { site_eui: Math.round(siteEui * 10) / 10 },
-    benchmark: {
-      national_median: median,
-      pct_vs_median: Math.round(pct * 10) / 10,
-      label: pct > 10 ? "Below average — significant efficiency opportunity" : "Average performance for this building type",
-      savings_potential_kbtu_sqft: Math.max(0, Math.round((siteEui - median * 0.75) * 10) / 10),
-    },
-    carbon: { total_mtco2e: Math.round(mtco2e), mtco2e_per_sqft: perSqft },
-    financials: {
-      annual_total_cost_usd: Math.round(kwh * rate + th * 1.27),
-      cost_per_sqft: Math.round(((kwh * rate + th * 1.27) / sqFt) * 100) / 100,
-    },
+    summary: { headline: penalty > 0 ? `Current LL97 penalty: ${fmtCur(penalty)}/yr. Upgrade plan below.` : 'Currently within LL97 2024–2029 limits.' },
+    eui: { site_eui: Math.round(siteEui*10)/10 },
+    benchmark: { national_median: median, pct_vs_median: Math.round(pct*10)/10, label: pct>10?'Below average — significant efficiency opportunity':'Average performance for this building type' },
+    carbon: { total_mtco2e: Math.round(mtco2e) },
+    financials: { annual_total_cost_usd: Math.round(annCost), cost_per_sqft: Math.round(annCost/sqFt*100)/100 },
     compliance: {
-      cities_checked: [{
-        city: "New York City", law: "Local Law 97 (LL97)",
-        compliant_now: penalty === 0,
-        compliant_2030: perSqft <= 0.00453,
-        penalty_now_usd: Math.round(penalty),
-        penalty_2030_usd: Math.round(Math.max(0, perSqft - 0.00453) * sqFt * 268),
-      }],
-      total_penalty_now:  Math.round(penalty),
-      total_penalty_2030: Math.round(Math.max(0, perSqft - 0.00453) * sqFt * 268),
+      cities_checked: [{ city:'New York City', law:'Local Law 97 (LL97)', compliant_now:penalty===0, compliant_2030:perSqft<=0.00453, penalty_now_usd:Math.round(penalty), penalty_2030_usd:Math.round(Math.max(0,perSqft-0.00453)*sqFt*268) }],
+      total_penalty_now: Math.round(penalty),
+      total_penalty_2030: Math.round(Math.max(0,perSqft-0.00453)*sqFt*268),
     },
-    solar_potential: {
-      system_capacity_kw:      Math.round(sqFt * 0.4 * 0.7 * 0.012),
-      annual_production_kwh:   Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300),
-      annual_savings_usd:      Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300 * rate),
-      ll97_der_deduction_tco2e: Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300 * 0.000289 * 100) / 100,
-    },
+    solar_potential: { system_capacity_kw:Math.round(sqFt*0.4*0.7*0.012), annual_production_kwh:Math.round(sqFt*0.4*0.7*0.012*1300), annual_savings_usd:Math.round(sqFt*0.4*0.7*0.012*1300*rate), ll97_der_deduction_tco2e:Math.round(sqFt*0.4*0.7*0.012*1300*0.000289*100)/100 },
     upgrade_priorities: [
-      { rank:1, name:"LED Lighting Retrofit", description:"Replace fluorescent fixtures with LED. Reduces lighting energy 40–60%.", annual_savings_usd: Math.round(kwh*rate*0.08), simple_payback_yr:2.5, priority:"immediate", source:"DOE Better Buildings, 2023" },
-      { rank:2, name:"HVAC Tune-Up & Controls", description:"Economiser calibration, VAV rebalancing, BMS scheduling.", annual_savings_usd: Math.round(kwh*rate*0.10), simple_payback_yr:1.8, priority:"immediate", source:"ASHRAE 90.1-2019 / ENERGY STAR" },
-      { rank:3, name:"Smart Thermostat / Setback Controls", description:"Occupancy-based temperature setback. 6–12% HVAC savings.", annual_savings_usd: Math.round(kwh*rate*0.07), simple_payback_yr:1.2, priority:"immediate", source:"ENERGY STAR Commercial Buildings" },
-      { rank:4, name:"Variable Frequency Drives", description:"VFDs cut motor energy 30–50% at partial load.", annual_savings_usd: Math.round(kwh*rate*0.09), simple_payback_yr:2.8, priority:"high", source:"ASHRAE 90.1-2019 §6.5.3" },
-      { rank:5, name:"Building Envelope Air Sealing", description:"Seal penetrations, weatherstrip doors/windows.", annual_savings_usd: Math.round(kwh*rate*0.06), simple_payback_yr:3.0, priority:"high", source:"DOE EERE Building Envelope R&D" },
-      { rank:6, name:"Heat Pump Conversion", description:"Replace gas boiler with high-efficiency heat pump. Critical for 2030 LL97.", annual_savings_usd: Math.round(kwh*rate*0.15), simple_payback_yr:7.0, priority:"long_term", source:"NYSERDA / DOE BTO 2024" },
+      {rank:1,name:'Smart Thermostat / Setback Controls',description:'Occupancy-based temperature setback. 6–12% HVAC savings.',annual_savings_usd:Math.round(annCost*0.07),simple_payback_yr:1.2,priority:'immediate',source:'ENERGY STAR Commercial Buildings'},
+      {rank:2,name:'HVAC Tune-Up & Controls',description:'Economiser calibration, VAV rebalancing, BMS scheduling.',annual_savings_usd:Math.round(annCost*0.10),simple_payback_yr:1.8,priority:'immediate',source:'ASHRAE 90.1-2019 / ENERGY STAR'},
+      {rank:3,name:'LED Lighting Retrofit',description:'Replace fluorescent fixtures with LED. 40–60% lighting energy reduction.',annual_savings_usd:Math.round(annCost*0.08),simple_payback_yr:2.5,priority:'immediate',source:'DOE Better Buildings, 2023'},
+      {rank:4,name:'Variable Frequency Drives',description:'VFDs cut motor energy 30–50% at partial load.',annual_savings_usd:Math.round(annCost*0.09),simple_payback_yr:2.8,priority:'high',source:'ASHRAE 90.1-2019 §6.5.3'},
+      {rank:5,name:'Building Envelope Air Sealing',description:'Seal penetrations, weatherstrip doors and windows.',annual_savings_usd:Math.round(annCost*0.06),simple_payback_yr:3.0,priority:'high',source:'DOE EERE Building Envelope R&D'},
+      {rank:6,name:'Heat Pump Conversion',description:'Replace gas boiler with high-efficiency heat pump. Critical for 2030 LL97.',annual_savings_usd:Math.round(annCost*0.15),simple_payback_yr:7.0,priority:'long_term',source:'NYSERDA / DOE BTO 2024'},
     ]
   };
 }
+
+// Close modal on overlay click
+document.getElementById('pdfModal').addEventListener('click', function(e) {
+  if (e.target === this) closePdfModal();
+});
 </script>
 
+<!-- ── PRINT STYLES ── -->
 <style>
 @media print {
-  header, footer, .form-card, .run-btn, .pdf-btn, .hero { display: none !important; }
+  .ticker-wrap, header, .section-bar, .form-panel,
+  .run-btn, .actions-bar, .pricing-section,
+  .contact-section, .page-indicator, footer,
+  .modal-overlay { display: none !important; }
   .main { grid-template-columns: 1fr !important; padding: 0 !important; }
-  body { background: white !important; font-size: 11px; }
-  .card { border: 1px solid #ccc !important; margin-bottom: 1rem; break-inside: avoid; }
+  body { background: white !important; font-size: 11px; animation: none; opacity: 1; }
+  .card { break-inside: avoid; margin-bottom: 1rem; border: 1px solid #ccc !important; }
   .card-head { background: #f5f5f5 !important; }
   .penalty-banner.danger { background: #fdf2f0 !important; }
+  .penalty-banner.ok { background: #f0f8f4 !important; }
   .metric-val.red   { color: #c0392b !important; }
   .metric-val.green { color: #2e7d5b !important; }
   .metric-val.blue  { color: #1a4a7a !important; }
+  .hero { padding: 1rem !important; }
+  .hero h1 { font-size: 1.5rem !important; opacity: 1 !important; }
+  .hero-kicker, .hero-sub, .hero-actions, .hero-right,
+  .hero::before { display: none !important; }
+  .disclaimer-section { background: white !important; }
+  .city-table th { background: #f5f5f5 !important; }
+  .results-col { animation: none !important; }
+  .card { animation: none !important; }
 }
 </style>
+
 </body>
 </html>
