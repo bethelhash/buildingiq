@@ -1524,63 +1524,79 @@ footer {
 <!-- ── PRICING ── -->
 <section class="pricing-section" id="sec2">
   <div class="pricing-inner">
-    <div class="pricing-eyebrow">Pricing</div>
-    <div class="pricing-title">Simple, transparent access.</div>
-    <div class="pricing-grid">
-
-      <div class="pricing-card">
-        <div class="pricing-tier">Single Report</div>
-        <div class="pricing-price">$49</div>
-        <div class="pricing-period">one-time payment</div>
-        <ul class="pricing-features">
-          <li class="highlight">Full compliance audit PDF</li>
-          <li class="highlight">LL97 + BERDO + Denver penalties</li>
-          <li class="highlight">Upgrade priority roadmap</li>
-          <li>EPA EUI benchmark</li>
-          <li>Solar offset analysis</li>
-          <li>All figures cited to source</li>
-        </ul>
-        <a href="https://buy.stripe.com/your_single_report_link" target="_blank" class="pricing-btn">
-          Buy Report →
-        </a>
+      <div class="pricing-eyebrow">Pricing</div>
+      <div class="pricing-title">Paid plans launching soon.</div>
+      <p style="font-family:var(--body);font-size:15px;color:#888;max-width:520px;line-height:1.8;margin-bottom:2.5rem">
+        BuildingIQ is in early access. Run unlimited free audits now.
+        Paid plans with PDF export, API access, and portfolio screening launch shortly.
+        Join the early access list to be notified first and lock in founding member pricing.
+      </p>
+      <div class="pricing-grid">
+        <div class="pricing-card" style="opacity:0.5;pointer-events:none">
+          <div class="pricing-tier">Single Report</div>
+          <div class="pricing-price">$49</div>
+          <div class="pricing-period">one-time · coming soon</div>
+          <ul class="pricing-features">
+            <li class="highlight">Full compliance audit PDF</li>
+            <li class="highlight">LL97 + BERDO + Denver penalties</li>
+            <li class="highlight">Upgrade priority roadmap</li>
+            <li>EPA EUI benchmark</li>
+            <li>Solar offset analysis</li>
+            <li>All figures cited to source</li>
+          </ul>
+          <div class="pricing-btn" style="cursor:default;border-color:#333;color:#444">Coming Soon</div>
+        </div>
+        <div class="pricing-card featured" style="opacity:0.5;pointer-events:none">
+          <div class="pricing-tier">Professional</div>
+          <div class="pricing-price">$99</div>
+          <div class="pricing-period">per month · coming soon</div>
+          <ul class="pricing-features">
+            <li class="highlight">Unlimited audits</li>
+            <li class="highlight">All three BPS cities</li>
+            <li class="highlight">API access included</li>
+            <li class="highlight">1,000 API calls / hour</li>
+            <li>Priority support</li>
+            <li>White-label option available</li>
+          </ul>
+          <div class="pricing-btn featured-btn" style="cursor:default;opacity:0.6">Coming Soon</div>
+        </div>
+        <div class="pricing-card" style="opacity:0.5;pointer-events:none">
+          <div class="pricing-tier">Enterprise</div>
+          <div class="pricing-price">$299</div>
+          <div class="pricing-period">per month · all 6 APIs</div>
+          <ul class="pricing-features">
+            <li class="highlight">All 6 SolarTruth APIs</li>
+            <li class="highlight">5,000 API calls / hour</li>
+            <li class="highlight">Portfolio-level screening</li>
+            <li>Custom integration support</li>
+            <li>SLA guarantee</li>
+            <li>Dedicated onboarding</li>
+          </ul>
+          <div class="pricing-btn" style="cursor:default;border-color:#333;color:#444">Contact Us</div>
+        </div>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="pricing-tier">Professional</div>
-        <div class="pricing-price">$99</div>
-        <div class="pricing-period">per month · cancel anytime</div>
-        <ul class="pricing-features">
-          <li class="highlight">Unlimited audits</li>
-          <li class="highlight">All three BPS cities</li>
-          <li class="highlight">API access included</li>
-          <li class="highlight">1,000 API calls / hour</li>
-          <li>Priority support</li>
-          <li>White-label option available</li>
-        </ul>
-        <a href="https://buy.stripe.com/your_pro_link" target="_blank" class="pricing-btn featured-btn">
-          Start Pro Plan →
-        </a>
+      <!-- EARLY ACCESS CAPTURE -->
+      <div style="margin-top:2.5rem;background:#1a1a1a;border:1px solid #2a2a2a;padding:2rem;max-width:560px">
+        <div style="font-family:var(--mono);font-size:10px;letter-spacing:0.14em;color:var(--red);text-transform:uppercase;margin-bottom:0.5rem">Early Access</div>
+        <div style="font-family:var(--display);font-size:1.6rem;font-weight:300;color:#f0efec;margin-bottom:0.6rem">Get notified when paid plans launch.</div>
+        <div style="font-family:var(--body);font-size:13px;color:#777;line-height:1.75;margin-bottom:1.2rem">
+          Founding members receive 30% off their first 3 months. No obligation.
+          By submitting you agree to receive product updates and occasional offers from BuildingIQ.
+          Unsubscribe at any time.
+        </div>
+        <form id="earlyAccessForm" onsubmit="submitEarlyAccess(event)" style="display:flex;gap:8px;flex-wrap:wrap">
+          <input type="email" id="earlyEmail" placeholder="your@email.com" required
+            style="flex:1;min-width:220px;background:#0d0d0d;border:1px solid #333;color:#f0efec;font-family:var(--mono);font-size:12px;padding:10px 12px;outline:none;border-radius:0">
+          <button type="submit" style="background:var(--red);color:#fff;border:none;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;padding:10px 20px;cursor:pointer;white-space:nowrap;transition:background 0.15s">
+            Join Waitlist
+          </button>
+        </form>
+        <div id="earlySuccess" style="display:none;margin-top:10px;font-family:var(--body);font-size:13px;color:#7ecfaa;line-height:1.6">
+          ✓ You are on the list. We will be in touch when paid plans launch.
+        </div>
       </div>
-
-      <div class="pricing-card">
-        <div class="pricing-tier">Enterprise</div>
-        <div class="pricing-price">$299</div>
-        <div class="pricing-period">per month · all 6 APIs</div>
-        <ul class="pricing-features">
-          <li class="highlight">All 6 SolarTruth APIs</li>
-          <li class="highlight">5,000 API calls / hour</li>
-          <li class="highlight">Portfolio-level screening</li>
-          <li>Custom integration support</li>
-          <li>SLA guarantee</li>
-          <li>Dedicated onboarding</li>
-        </ul>
-        <a href="#contact" class="pricing-btn">
-          Contact for Access →
-        </a>
-      </div>
-
     </div>
-  </div>
 </section>
 
 <!-- ── CONTACT ── -->
@@ -1701,7 +1717,7 @@ footer {
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 BuildingIQ · SolarTruth · Tinashe Bethel</span>
+    <span>© 2026 BuildingIQ · SolarTruth · Tinashe Nedi</span>
     <span style="display:flex;align-items:center;gap:8px">
       <span class="live-dot"></span>
       All systems operational
@@ -1709,31 +1725,87 @@ footer {
   </div>
 </footer>
 
-<!-- ── PDF MODAL ── -->
+<!-- ── EXPORT GATE MODAL ── -->
 <div class="modal-overlay" id="pdfModal">
-  <div class="modal">
+  <div class="modal" style="width:520px">
     <div class="modal-head">
-      <div class="modal-title">Export Report</div>
+      <div class="modal-title">Export Compliance Report</div>
       <button class="modal-close" onclick="closePdfModal()">✕</button>
     </div>
     <div class="modal-body">
-      <p class="modal-desc">Choose your export format. The compliance report includes all penalty calculations, EUI benchmark, solar offset, and upgrade roadmap with citations.</p>
-      <div class="modal-options">
-        <div class="modal-option" onclick="printReport()">
-          <span class="modal-option-icon">🖨</span>
-          <div class="modal-option-text">
-            <h4>Print / Save as PDF</h4>
-            <p>Opens your browser print dialog. Choose "Save as PDF" as the destination.</p>
+
+      <!-- STEP 1: EMAIL GATE -->
+      <div id="gateStep1">
+        <p class="modal-desc">
+          Your compliance report is ready. Enter your work email to download.
+          One report per email address every 48 hours.
+          By continuing you agree to receive product updates and occasional offers
+          from BuildingIQ. You can unsubscribe at any time.
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:12px">
+          <div>
+            <label style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:var(--light);text-transform:uppercase;display:block;margin-bottom:4px">Work Email Address</label>
+            <input type="email" id="gateEmail" placeholder="you@company.com"
+              style="width:100%;background:var(--bg);border:1px solid var(--rule);color:var(--charcoal);font-family:var(--mono);font-size:13px;padding:10px 12px;outline:none;border-radius:0;transition:border-color 0.15s"
+              onkeydown="if(event.key==='Enter')submitGate()">
+          </div>
+          <div>
+            <label style="font-family:var(--mono);font-size:9px;letter-spacing:0.1em;color:var(--light);text-transform:uppercase;display:block;margin-bottom:4px">Your Role <span style="color:#bbb;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <select id="gateRole"
+              style="width:100%;background:var(--bg);border:1px solid var(--rule);color:var(--charcoal);font-family:var(--mono);font-size:12px;padding:10px 12px;outline:none;-webkit-appearance:none;border-radius:0">
+              <option value="">Select your role</option>
+              <option value="property_manager">Property Manager</option>
+              <option value="sustainability_consultant">Sustainability Consultant</option>
+              <option value="cpa_accountant">CPA / Accountant</option>
+              <option value="developer">Developer / Programmer</option>
+              <option value="architect_engineer">Architect / Engineer</option>
+              <option value="investor">Real Estate Investor</option>
+              <option value="building_owner">Building Owner</option>
+              <option value="other">Other</option>
+            </select>
           </div>
         </div>
-        <div class="modal-option" onclick="downloadJSON()">
-          <span class="modal-option-icon">{ }</span>
-          <div class="modal-option-text">
-            <h4>Download Raw Data (JSON)</h4>
-            <p>Download the full API response as a JSON file for your records.</p>
+
+        <div id="gateError" style="display:none;background:var(--red-bg);border:1px solid var(--red-border);padding:8px 12px;color:var(--red);font-family:var(--mono);font-size:11px;margin-bottom:10px;line-height:1.5"></div>
+
+        <button onclick="submitGate()"
+          style="width:100%;background:var(--red);color:#fff;border:none;font-family:var(--serif);font-size:13px;letter-spacing:0.04em;padding:13px;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px"
+          id="gateSubmitBtn">
+          <span id="gateSpinner" style="display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite"></span>
+          Download Report
+        </button>
+
+        <p style="font-family:var(--mono);font-size:9px;color:#bbb;line-height:1.6;margin-top:10px;letter-spacing:0.03em">
+          We do not sell or share your email. You will receive your report immediately
+          and may receive occasional product updates from BuildingIQ.
+          Unsubscribe any time via the link in any email.
+        </p>
+      </div>
+
+      <!-- STEP 2: CHOOSE FORMAT (shown after email verified) -->
+      <div id="gateStep2" style="display:none">
+        <p class="modal-desc" style="margin-bottom:1rem">
+          ✓ Verified. Choose your export format below.
+        </p>
+        <div class="modal-options">
+          <div class="modal-option" onclick="printReport()">
+            <span class="modal-option-icon">🖨</span>
+            <div class="modal-option-text">
+              <h4>Print / Save as PDF</h4>
+              <p>Opens your browser print dialog. Select "Save as PDF" as the destination for a formatted A4 report.</p>
+            </div>
+          </div>
+          <div class="modal-option" onclick="downloadJSON()">
+            <span class="modal-option-icon">{ }</span>
+            <div class="modal-option-text">
+              <h4>Download Raw Data (JSON)</h4>
+              <p>Full API response with all penalty calculations, benchmarks, and citations as a JSON file.</p>
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -2125,6 +2197,231 @@ function buildDemo(p) {
 document.getElementById('pdfModal').addEventListener('click', function(e) {
   if (e.target === this) closePdfModal();
 });
+
+// ── TEMP MAIL DETECTION ──
+// Comprehensive blocklist of disposable/temporary email domains
+const BLOCKED_DOMAINS = new Set([
+  'mailinator.com','guerrillamail.com','guerrillamail.net','guerrillamail.org',
+  'guerrillamail.biz','guerrillamail.de','guerrillamail.info','grr.la',
+  'sharklasers.com','guerrillamailblock.com','spam4.me','yopmail.com',
+  'yopmail.fr','cool.fr.nf','jetable.fr.nf','nospam.ze.tc','nomail.xl.cx',
+  'mega.zik.dj','speed.1s.fr','courriel.fr.nf','moncourrier.fr.nf',
+  'monemail.fr.nf','monmail.fr.nf','trashmail.com','trashmail.at',
+  'trashmail.io','trashmail.me','trashmail.net','trashmail.org',
+  'trashmail.xyz','dispostable.com','mailnull.com','spamgourmet.com',
+  'maildrop.cc','throwam.com','throwam.net','spamboy.com','getnada.com',
+  'tempmail.com','tempmail.net','tempmail.org','temp-mail.org','temp-mail.io',
+  'tmpmail.net','tmpmail.org','throwaway.email','throwam.com',
+  'fakeinbox.com','mailnew.com','mailscrap.com','discard.email',
+  'spamherelots.com','binkmail.com','bobmail.info','dacoolest.com',
+  'drdrb.net','dump-email.info','dumpandfuck.com','fakedemail.com',
+  'filzmail.com','gishpuppy.com','hmamail.com','ieh-mail.de',
+  'imails.info','jetable.com','jetable.org','keepmymail.com',
+  'killmail.com','letthemeatspam.com','lol.ovpn.to','nwytg.net',
+  'o2.pl','objectmail.com','obobbo.com','odnorazovoe.ru','oneoffmail.com',
+  'poosy.de','proxymail.eu.org','qq.com','rtrtr.com','s0ny.net',
+  'sendspamhere.com','sharklasers.com','shiftmail.com','shitmail.de',
+  'spamevader.com','spamex.com','spamfree24.org','spamhere.eu',
+  'spamhereplease.com','spamoff.de','spamspot.com','spamdecoy.net',
+  'superrito.com','tempemail.net','temporaryemail.net','tilien.com',
+  'tmailinator.com','trbvm.com','trillianpro.com','turual.com',
+  'uggsrock.com','uroid.com','vomoto.com','wilemail.com','wt2.info',
+  'zoemail.net','10minutemail.com','10minutemail.net','10minutemail.org',
+  '10minemail.com','20minutemail.com','dispostable.com',
+  'mailnesia.com','spamgourmet.net','spamgourmet.org',
+  'notmail.top','crazymailing.com','mohmal.com','throwam.com',
+  'inoutmail.com','inoutmail.eu','inoutmail.de','inoutmail.info',
+]);
+
+// Suspicious patterns that suggest temp mail even if domain not listed
+const SUSPICIOUS_PATTERNS = [
+  /^[a-f0-9]{8,}@/i,      // random hex before @
+  /\+.*@/,                  // plus-addressing (we allow but flag)
+  /temp|trash|spam|fake|junk|throwaway|dispos/i,
+  /^\d{6,}@/,               // starts with 6+ digits
+];
+
+// Free consumer domains (allowed but we know they're not work emails)
+const FREE_DOMAINS = new Set([
+  'gmail.com','yahoo.com','hotmail.com','outlook.com','live.com',
+  'icloud.com','me.com','mac.com','aol.com','protonmail.com',
+  'proton.me','tutanota.com','zoho.com',
+]);
+
+function validateEmail(email) {
+  if (!email || !email.includes('@')) return { valid: false, reason: 'Please enter a valid email address.' };
+  const parts = email.toLowerCase().trim().split('@');
+  if (parts.length !== 2) return { valid: false, reason: 'Please enter a valid email address.' };
+  const domain = parts[1];
+
+  if (BLOCKED_DOMAINS.has(domain)) {
+    return { valid: false, reason: 'Disposable email addresses are not accepted. Please use your work or personal email.' };
+  }
+
+  for (const pattern of SUSPICIOUS_PATTERNS.slice(0,1)) {
+    if (pattern.test(email)) {
+      return { valid: false, reason: 'This email address does not appear to be valid. Please use your work email.' };
+    }
+  }
+
+  // Check for temp/spam keywords in domain
+  if (/temp|trash|spam|fake|junk|throwaway|dispos|mailinator/.test(domain)) {
+    return { valid: false, reason: 'Disposable email addresses are not accepted. Please use your work or personal email.' };
+  }
+
+  return { valid: true, isFreeEmail: FREE_DOMAINS.has(domain) };
+}
+
+// ── 48-HOUR RATE LIMIT ──
+function getEmailHash(email) {
+  // Simple hash — not cryptographic, just for local storage key
+  let hash = 0;
+  const str = email.toLowerCase().trim();
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(36);
+}
+
+function checkRateLimit(email) {
+  const key = 'biq_dl_' + getEmailHash(email);
+  const stored = localStorage.getItem(key);
+  if (!stored) return { allowed: true };
+  const lastDownload = parseInt(stored);
+  const hoursAgo = (Date.now() - lastDownload) / (1000 * 60 * 60);
+  if (hoursAgo < 48) {
+    const hoursLeft = Math.ceil(48 - hoursAgo);
+    return {
+      allowed: false,
+      reason: `This email has already downloaded a report in the last 48 hours. Please try again in ${hoursLeft} hour${hoursLeft===1?'':'s'}.`
+    };
+  }
+  return { allowed: true };
+}
+
+function recordDownload(email) {
+  const key = 'biq_dl_' + getEmailHash(email);
+  localStorage.setItem(key, Date.now().toString());
+}
+
+// ── GATE SUBMIT ──
+async function submitGate() {
+  const emailInput = document.getElementById('gateEmail');
+  const email = emailInput.value.trim();
+  const role  = document.getElementById('gateRole').value;
+  const errorDiv = document.getElementById('gateError');
+  const btn = document.getElementById('gateSubmitBtn');
+  const spinner = document.getElementById('gateSpinner');
+
+  errorDiv.style.display = 'none';
+
+  // Validate email
+  const validation = validateEmail(email);
+  if (!validation.valid) {
+    errorDiv.textContent = validation.reason;
+    errorDiv.style.display = 'block';
+    emailInput.focus();
+    return;
+  }
+
+  // Rate limit check
+  const rateCheck = checkRateLimit(email);
+  if (!rateCheck.allowed) {
+    errorDiv.textContent = rateCheck.reason;
+    errorDiv.style.display = 'block';
+    return;
+  }
+
+  // Loading state
+  btn.disabled = true;
+  spinner.style.display = 'inline-block';
+  btn.querySelector('span:last-child') && (btn.lastChild.textContent = ' Verifying…');
+
+  // Submit to Formspree
+  try {
+    const buildingData = lastResult ? {
+      property_type: lastResult.input?.property_label || '',
+      sq_ft:         lastResult.input?.sq_ft || '',
+      penalty_now:   lastResult.compliance?.total_penalty_now || 0,
+      penalty_2030:  lastResult.compliance?.total_penalty_2030 || 0,
+      site_eui:      lastResult.eui?.site_eui || '',
+      city:          lastResult.input?.city || '',
+    } : {};
+
+    await fetch('https://formspree.io/f/xdawbwpe', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        role,
+        source: 'buildingiq_report_download',
+        consent: 'User agreed to receive product updates and offers from BuildingIQ',
+        timestamp: new Date().toISOString(),
+        ...buildingData
+      })
+    });
+  } catch(e) {
+    // Formspree failure is non-blocking — still allow download
+    console.warn('Lead capture failed:', e);
+  }
+
+  // Record download time
+  recordDownload(email);
+
+  // Show export options
+  document.getElementById('gateStep1').style.display = 'none';
+  document.getElementById('gateStep2').style.display = 'block';
+
+  btn.disabled = false;
+  spinner.style.display = 'none';
+}
+
+// ── EARLY ACCESS FORM ──
+async function submitEarlyAccess(e) {
+  e.preventDefault();
+  const email = document.getElementById('earlyEmail').value.trim();
+  const btn = e.target.querySelector('button[type="submit"]');
+
+  const validation = validateEmail(email);
+  if (!validation.valid) {
+    alert(validation.reason);
+    return;
+  }
+
+  btn.textContent = 'Adding you…';
+  btn.disabled = true;
+
+  try {
+    await fetch('https://formspree.io/f/xdawbwpe', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        source: 'buildingiq_early_access_waitlist',
+        consent: 'User signed up for early access and agreed to receive product updates and founding member pricing from BuildingIQ',
+        timestamp: new Date().toISOString(),
+      })
+    });
+  } catch(e) { console.warn(e); }
+
+  document.getElementById('earlySuccess').style.display = 'block';
+  e.target.reset();
+  btn.textContent = 'Join Waitlist';
+  btn.disabled = false;
+}
+
+// Reset gate when modal closes
+function closePdfModal() {
+  document.getElementById('pdfModal').classList.remove('open');
+  // Reset to step 1 after a short delay
+  setTimeout(() => {
+    document.getElementById('gateStep1').style.display = 'block';
+    document.getElementById('gateStep2').style.display = 'none';
+    document.getElementById('gateError').style.display = 'none';
+    document.getElementById('gateEmail').value = '';
+  }, 300);
+}
 </script>
 
 <!-- ── PRINT STYLES ── -->
