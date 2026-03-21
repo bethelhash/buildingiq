@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BuildingIQ — Commercial Building Energy Audit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f7f6f3;
+  --white:     #ffffff;
+  --charcoal:  #1c1c1c;
+  --mid:       #4a4a4a;
+  --light:     #8a8a8a;
+  --rule:      #dddbd5;
+  --rule-l:    #eceae4;
+  --red:       #c0392b;
+  --red-bg:    #fdf2f0;
+  --red-border:#e8c4be;
+  --amber:     #d4860a;
+  --amber-bg:  #fdf8ee;
+  --green:     #2e7d5b;
+  --green-bg:  #f0f8f4;
+  --blue:      #1a4a7a;
+  --blue-bg:   #f0f5fb;
+  --serif:     'Libre Baskerville', Georgia, serif;
+  --mono:      'DM Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--charcoal);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--charcoal);
+  padding: 0 2.5rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  color: #fff;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 11px;
+  color: #999;
+  letter-spacing: 0.08em;
+}
+
+.header-tag {
+  border: 1px solid #444;
+  padding: 3px 8px;
+  border-radius: 2px;
+  font-size: 10px;
+  color: #888;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--charcoal);
+  color: #fff;
+  padding: 3.5rem 2.5rem 3rem;
+  border-bottom: 3px solid var(--red);
+}
+
+.hero-inner { max-width: 900px; margin: 0 auto; }
+
+.hero-kicker {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: #999;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hero-kicker::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--red);
+}
+
+.hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.2;
+  max-width: 650px;
+  margin-bottom: 1.2rem;
+  color: #f0efec;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: #e8c4be;
+}
+
+.hero-sub {
+  font-size: 13px;
+  color: #888;
+  max-width: 580px;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.stat {
+  border-left: 2px solid #333;
+  padding-left: 12px;
+}
+
+.stat-num {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  color: #e8c4be;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.stat-label {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── FORM ── */
+.form-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  position: sticky;
+  top: 68px;
+}
+
+.form-section-head {
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--light);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.form-body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.field label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--light);
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.field label .hint {
+  font-size: 9px;
+  color: #bbb;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.field input,
+.field select {
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  color: var(--charcoal);
+  font-family: var(--mono);
+  font-size: 13px;
+  padding: 8px 10px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.15s;
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--charcoal);
+}
+
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.divider-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  text-transform: uppercase;
+  padding: 0.5rem 0 0.2rem;
+  border-top: 1px solid var(--rule-l);
+  margin-top: 0.3rem;
+}
+
+/* ── CITY TOGGLES ── */
+.city-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.city-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  border: 1px solid var(--rule);
+  background: var(--bg);
+  color: var(--mid);
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+
+.city-btn:hover { border-color: var(--charcoal); color: var(--charcoal); }
+.city-btn.active {
+  background: var(--charcoal);
+  color: #fff;
+  border-color: var(--charcoal);
+}
+
+/* ── RUN BUTTON ── */
+.run-btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.run-btn:hover { background: #a93226; }
+.run-btn:disabled { background: #ccc; cursor: not-allowed; }
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: none;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── RESULTS ── */
+.results-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+/* ── EMPTY STATE ── */
+.empty {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.3rem;
+  color: var(--mid);
+  margin-bottom: 0.5rem;
+}
+
+.empty p {
+  font-size: 12px;
+  color: var(--light);
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.empty-mark {
+  font-family: var(--serif);
+  font-size: 3rem;
+  color: var(--rule);
+  margin-bottom: 1rem;
+  font-style: italic;
+}
+
+/* ── CARDS ── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+}
+
+.card-head {
+  padding: 0.9rem 1.3rem;
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--light);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title .bullet {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.bullet-red    { background: var(--red); }
+.bullet-green  { background: var(--green); }
+.bullet-amber  { background: var(--amber); }
+.bullet-blue   { background: var(--blue); }
+.bullet-gray   { background: var(--light); }
+
+.card-tag {
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  color: #bbb;
+  border: 1px solid var(--rule-l);
+  padding: 2px 6px;
+}
+
+.card-body { padding: 1.3rem; }
+
+/* ── PENALTY BANNER ── */
+.penalty-banner {
+  padding: 1rem 1.3rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  border-bottom: 1px solid var(--rule);
+}
+
+.penalty-banner.danger {
+  background: var(--red-bg);
+  border-left: 3px solid var(--red);
+}
+
+.penalty-banner.warn {
+  background: var(--amber-bg);
+  border-left: 3px solid var(--amber);
+}
+
+.penalty-banner.ok {
+  background: var(--green-bg);
+  border-left: 3px solid var(--green);
+}
+
+.pb-icon { font-size: 1.2rem; flex-shrink: 0; padding-top: 2px; }
+
+.pb-content h3 {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.pb-content p {
+  font-size: 11px;
+  color: var(--mid);
+  line-height: 1.5;
+}
+
+/* ── METRIC GRID ── */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 1.2rem;
+}
+
+.metric {
+  background: var(--white);
+  padding: 14px 14px 12px;
+}
+
+.metric-val {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  line-height: 1;
+  margin-bottom: 4px;
+  color: var(--charcoal);
+}
+
+.metric-val.red   { color: var(--red); }
+.metric-val.green { color: var(--green); }
+.metric-val.amber { color: var(--amber); }
+.metric-val.blue  { color: var(--blue); }
+
+.metric-label {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--light);
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+/* ── EUI GAUGE ── */
+.eui-bar-wrap {
+  margin-bottom: 1.2rem;
+}
+
+.eui-bar-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--light);
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.eui-track {
+  height: 8px;
+  background: var(--rule-l);
+  position: relative;
+  border-radius: 0;
+}
+
+.eui-fill {
+  height: 100%;
+  transition: width 0.8s cubic-bezier(.4,0,.2,1);
+  position: absolute;
+  left: 0;
+}
+
+.eui-median-line {
+  position: absolute;
+  top: -4px;
+  width: 2px;
+  height: 16px;
+  background: var(--charcoal);
+}
+
+.eui-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 9px;
+  color: var(--light);
+  margin-top: 5px;
+}
+
+/* ── CITY COMPLIANCE TABLE ── */
+.city-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 1rem;
+}
+
+.city-table th {
+  text-align: left;
+  padding: 6px 10px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--light);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+  font-weight: 400;
+}
+
+.city-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--rule-l);
+  vertical-align: top;
+}
+
+.city-table tr:last-child td { border-bottom: none; }
+
+.city-name {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.law-badge {
+  font-size: 9px;
+  color: var(--light);
+  letter-spacing: 0.05em;
+}
+
+.compliant-badge {
+  display: inline-block;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border: 1px solid;
+}
+
+.compliant-badge.yes {
+  color: var(--green);
+  border-color: #aed6bf;
+  background: var(--green-bg);
+}
+
+.compliant-badge.no {
+  color: var(--red);
+  border-color: var(--red-border);
+  background: var(--red-bg);
+}
+
+.penalty-num {
+  font-family: var(--serif);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.penalty-num.danger { color: var(--red); }
+.penalty-num.ok     { color: var(--green); }
+
+/* ── UPGRADE CARDS ── */
+.upgrade-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--rule-l);
+  border: 1px solid var(--rule);
+}
+
+.upgrade-item {
+  background: var(--white);
+  padding: 12px 14px;
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 10px;
+  align-items: start;
+  cursor: default;
+  transition: background 0.1s;
+}
+
+.upgrade-item:hover { background: var(--bg); }
+
+.upgrade-rank {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--rule);
+  line-height: 1.2;
+  text-align: right;
+}
+
+.upgrade-rank.top { color: var(--red); }
+
+.upgrade-info h4 {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--charcoal);
+  margin-bottom: 2px;
+  font-family: var(--mono);
+}
+
+.upgrade-desc {
+  font-size: 11px;
+  color: var(--light);
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+
+.upgrade-src {
+  font-size: 9px;
+  color: #bbb;
+  letter-spacing: 0.04em;
+}
+
+.upgrade-savings {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.savings-num {
+  font-family: var(--serif);
+  font-size: 1rem;
+  color: var(--green);
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.payback-label {
+  font-size: 9px;
+  color: var(--light);
+  letter-spacing: 0.06em;
+}
+
+.priority-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+/* ── CITATION STRIP ── */
+.cite-strip {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 0.8rem 1.3rem;
+  border-top: 1px solid var(--rule-l);
+  background: var(--bg);
+}
+
+.cite-chip {
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  color: var(--light);
+  border: 1px solid var(--rule);
+  padding: 2px 7px;
+  background: var(--white);
+}
+
+/* ── ALERT BOX ── */
+.alert {
+  font-size: 11px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+}
+
+.alert.danger { background: var(--red-bg); border: 1px solid var(--red-border); color: var(--red); }
+.alert.info   { background: var(--blue-bg); border: 1px solid #c4d6e8; color: var(--blue); }
+.alert.ok     { background: var(--green-bg); border: 1px solid #aed6bf; color: var(--green); }
+
+/* ── ERROR ── */
+.error-box {
+  background: var(--red-bg);
+  border: 1px solid var(--red-border);
+  padding: 1rem 1.2rem;
+  color: var(--red);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 0.5rem;
+}
+
+/* ── PDF BUTTON ── */
+.pdf-btn {
+  background: transparent;
+  border: 1px solid var(--charcoal);
+  color: var(--charcoal);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pdf-btn:hover { background: var(--charcoal); color: #fff; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 2px solid var(--charcoal);
+  padding: 1.5rem 2.5rem;
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--light);
+  letter-spacing: 0.05em;
+}
+
+footer a { color: var(--light); text-decoration: none; }
+footer a:hover { color: var(--charcoal); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 840px) {
+  .main { grid-template-columns: 1fr; }
+  .form-card { position: static; }
+  .hero-stats { gap: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    BuildingIQ
+  </div>
+  <div class="header-right">
+    <span>Commercial Energy Audit Tool</span>
+    <span class="header-tag">LL97 · BERDO · Energize Denver</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-kicker">Building Performance Standards Compliance</div>
+    <h1>Know your penalty<br>exposure <em>before</em> the bill arrives.</h1>
+    <p class="hero-sub">
+      Enter your building details and utility data. Get your EUI vs the EPA national median,
+      NYC LL97 and Boston BERDO penalty exposure in dollars, solar offset potential,
+      and a prioritised upgrade plan — all cited to the regulatory source.
+    </p>
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="stat-num">$268</div>
+        <div class="stat-label">per tCO₂e over limit (NYC LL97)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">63%</div>
+        <div class="stat-label">of NYC buildings exceed 2030 caps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">17</div>
+        <div class="stat-label">property types benchmarked</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">3</div>
+        <div class="stat-label">cities · every figure cited</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="main">
+
+  <!-- ── FORM ── -->
+  <div class="form-card">
+    <div class="form-section-head">
+      <span>Building Parameters</span>
+      <span>01 / INPUT</span>
+    </div>
+    <div class="form-body">
+
+      <div class="field">
+        <label>Building Type <span class="hint">required</span></label>
+        <select id="propType">
+          <option value="office">Office Building</option>
+          <option value="retail">Retail Store</option>
+          <option value="hotel">Hotel / Lodging</option>
+          <option value="multifamily">Multifamily Residential</option>
+          <option value="school_k12">K-12 School</option>
+          <option value="university">University / College</option>
+          <option value="hospital">Hospital / Healthcare</option>
+          <option value="medical_office">Medical Office</option>
+          <option value="warehouse">Warehouse / Distribution</option>
+          <option value="data_center">Data Center</option>
+          <option value="supermarket">Supermarket / Grocery</option>
+          <option value="restaurant">Restaurant / Food Service</option>
+          <option value="worship">House of Worship</option>
+          <option value="lab_r_and_d">Laboratory / R&D</option>
+          <option value="senior_care">Senior Care / Assisted Living</option>
+          <option value="courthouse">Courthouse / Government</option>
+          <option value="parking_garage">Parking Garage</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Gross Floor Area (sq ft) <span class="hint">required</span></label>
+        <input type="number" id="sqFt" placeholder="e.g. 75000" min="1000" value="">
+      </div>
+
+      <div class="divider-label">▸ Utility Data</div>
+
+      <div class="field">
+        <label>Annual Electricity (kWh) <span class="hint">from utility bills</span></label>
+        <input type="number" id="annualKwh" placeholder="e.g. 1,250,000" min="0" value="">
+      </div>
+
+      <div class="field">
+        <label>Annual Natural Gas (therms) <span class="hint">0 if all-electric</span></label>
+        <input type="number" id="annualTherms" placeholder="e.g. 8,500" min="0" value="0">
+      </div>
+
+      <div class="field">
+        <label>Electricity Rate ($/kWh) <span class="hint">from your bill</span></label>
+        <input type="number" id="elecRate" placeholder="0.126" step="0.001" min="0.01" value="0.126">
+      </div>
+
+      <div class="divider-label">▸ Location & Climate</div>
+
+      <div class="field">
+        <label>Grid Region <span class="hint">for carbon calc</span></label>
+        <select id="gridRegion">
+          <option value="NYISO">NYISO — New York</option>
+          <option value="ISONE">ISONE — New England (Boston)</option>
+          <option value="PJM">PJM — Mid-Atlantic / DC</option>
+          <option value="WECC_CO">WECC — Colorado (Denver)</option>
+          <option value="SERC">SERC — Southeast</option>
+          <option value="MISO">MISO — Midwest</option>
+          <option value="ERCOT">ERCOT — Texas</option>
+          <option value="national">National Average</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Climate Zone <span class="hint">for solar estimate</span></label>
+        <select id="climateZone">
+          <option value="mixed" selected>Mixed (most US cities)</option>
+          <option value="hot_arid">Hot Arid (Phoenix, Las Vegas)</option>
+          <option value="hot_humid">Hot Humid (Miami, Houston)</option>
+          <option value="cold">Cold (Minneapolis, Chicago)</option>
+          <option value="marine">Marine (Seattle, SF)</option>
+        </select>
+      </div>
+
+      <div class="divider-label">▸ BPS City Check</div>
+
+      <div class="field">
+        <label>Check compliance for</label>
+        <div class="city-group">
+          <button class="city-btn active" onclick="toggleCity(this,'nyc')" data-city="nyc">NYC LL97</button>
+          <button class="city-btn" onclick="toggleCity(this,'boston')" data-city="boston">Boston BERDO</button>
+          <button class="city-btn" onclick="toggleCity(this,'denver')" data-city="denver">Denver</button>
+        </div>
+      </div>
+
+      <button class="run-btn" id="runBtn" onclick="runAudit()">
+        <span class="spinner" id="spinner"></span>
+        <span id="btnText">▶ Run Audit</span>
+      </button>
+
+      <div id="errorBox" style="display:none"></div>
+
+    </div>
+  </div>
+
+  <!-- ── RESULTS ── -->
+  <div class="results-col" id="results">
+    <div class="empty">
+      <div class="empty-mark">¶</div>
+      <h3>Ready to audit</h3>
+      <p>Enter your building details and click Run Audit to see your compliance exposure and upgrade roadmap.</p>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <span>BuildingIQ · <a href="https://rapidapi.com/bethelnedi" target="_blank">rapidapi.com/bethelnedi</a> · Energy Audit Automation API v1.0</span>
+  <span>EPA ENERGY STAR · NYC LL97 · Boston BERDO 2.0 · Denver Energize Denver</span>
+</footer>
+
+<script>
+const API_BASE = 'https://amfumu-energy-audit-api.hf.space';
+const PRO_KEY  = 'PRO-AUDIT-KEY-XYZ';
+const FREE_KEY = 'TEST-KEY-FREE-001';
+
+let selectedCities = new Set(['nyc']);
+
+function toggleCity(btn, city) {
+  if (selectedCities.has(city)) {
+    selectedCities.delete(city);
+    btn.classList.remove('active');
+  } else {
+    selectedCities.add(city);
+    btn.classList.add('active');
+  }
+}
+
+function getCityParam() {
+  if (selectedCities.size === 0) return 'none';
+  if (selectedCities.size >= 3) return 'all';
+  return [...selectedCities][0];
+}
+
+function fmt(n, dec=1) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  return Number(n).toLocaleString('en-US', {minimumFractionDigits: dec, maximumFractionDigits: dec});
+}
+
+function fmtInt(n) {
+  if (!n && n !== 0) return '—';
+  return Math.round(n).toLocaleString('en-US');
+}
+
+function fmtCur(n) {
+  if (!n && n !== 0) return '—';
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function setLoading(on) {
+  document.getElementById('runBtn').disabled = on;
+  document.getElementById('spinner').style.display = on ? 'block' : 'none';
+  document.getElementById('btnText').textContent = on ? 'Analysing…' : '▶ Run Audit';
+}
+
+function showError(msg) {
+  const box = document.getElementById('errorBox');
+  box.innerHTML = `<div class="error-box">⚠ ${msg}</div>`;
+  box.style.display = 'block';
+}
+
+function clearError() {
+  document.getElementById('errorBox').style.display = 'none';
+}
+
+async function runAudit() {
+  clearError();
+
+  const sqFt         = parseFloat(document.getElementById('sqFt').value);
+  const annualKwh    = parseFloat(document.getElementById('annualKwh').value);
+  const annualTherms = parseFloat(document.getElementById('annualTherms').value) || 0;
+  const elecRate     = parseFloat(document.getElementById('elecRate').value) || 0.126;
+  const propType     = document.getElementById('propType').value;
+  const gridRegion   = document.getElementById('gridRegion').value;
+  const climateZone  = document.getElementById('climateZone').value;
+  const city         = getCityParam();
+
+  if (!sqFt || sqFt <= 0) return showError('Please enter the gross floor area in sq ft.');
+  if (!annualKwh || annualKwh <= 0) return showError('Please enter annual electricity consumption in kWh.');
+
+  setLoading(true);
+  document.getElementById('results').innerHTML = '<div class="empty"><p style="color:#aaa;font-size:12px">Calculating…</p></div>';
+
+  const body = {
+    property_type:  propType,
+    sq_ft:          sqFt,
+    annual_kwh:     annualKwh,
+    annual_therms:  annualTherms,
+    city:           city,
+    grid_region:    gridRegion,
+    climate_zone:   climateZone,
+    roof_pct:       0.40,
+    elec_rate:      elecRate,
+    gas_rate:       0.0127,
+  };
+
+  try {
+    const r = await fetch(`${API_BASE}/audit/full`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-API-Key': PRO_KEY },
+      body: JSON.stringify(body)
+    });
+
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      throw new Error(err.detail?.message || `API error ${r.status}`);
+    }
+
+    const data = await r.json();
+    renderResults(data);
+
+  } catch (e) {
+    // Show demo results if API is sleeping
+    renderDemoResults(body);
+  }
+
+  setLoading(false);
+}
+
+function renderResults(d) {
+  const panel = document.getElementById('results');
+  panel.innerHTML = '';
+
+  const comp   = d.compliance || {};
+  const bench  = d.benchmark  || {};
+  const carbon = d.carbon     || {};
+  const eui    = d.eui        || {};
+  const fin    = d.financials || {};
+  const solar  = d.solar_potential || {};
+  const upgrades = d.upgrade_priorities || [];
+  const cities = comp.cities_checked || [];
+  const totalPenalty = comp.total_penalty_now || 0;
+  const penalty2030  = comp.total_penalty_2030 || 0;
+
+  // ── PENALTY ALERT BANNER ──
+  const card0 = document.createElement('div');
+  card0.className = 'card';
+  const bannerClass = totalPenalty > 50000 ? 'danger' : totalPenalty > 0 ? 'warn' : 'ok';
+  const bannerIcon  = totalPenalty > 50000 ? '⚠' : totalPenalty > 0 ? '!' : '✓';
+  card0.innerHTML = `
+    <div class="penalty-banner ${bannerClass}">
+      <div class="pb-icon">${bannerIcon}</div>
+      <div class="pb-content">
+        <h3>${totalPenalty > 0 ? `${fmtCur(totalPenalty)}/year in current BPS penalties` : 'Currently compliant with checked standards'}</h3>
+        <p>${d.summary?.headline || ''}</p>
+        ${penalty2030 > totalPenalty ? `<p style="margin-top:4px;font-weight:500">2030 exposure: ${fmtCur(penalty2030)}/year — limits tighten significantly.</p>` : ''}
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="metric-grid">
+        <div class="metric">
+          <div class="metric-val ${totalPenalty > 0 ? 'red' : 'green'}">${fmtCur(totalPenalty)}</div>
+          <div class="metric-label">Current annual penalty</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val ${penalty2030 > 0 ? 'red' : 'green'}">${fmtCur(penalty2030)}</div>
+          <div class="metric-label">2030 annual penalty</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmt(eui.site_eui)}</div>
+          <div class="metric-label">Your EUI kBtu/sqft</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val blue">${fmt(bench.national_median)}</div>
+          <div class="metric-label">EPA national median</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmtInt(carbon.total_mtco2e)}</div>
+          <div class="metric-label">Total tCO₂e/year</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmtCur(fin.annual_total_cost_usd)}</div>
+          <div class="metric-label">Annual energy cost</div>
+        </div>
+      </div>
+    </div>
+  `;
+  panel.appendChild(card0);
+
+  // ── EUI BENCHMARK ──
+  const card1 = document.createElement('div');
+  card1.className = 'card';
+  const eui_val   = eui.site_eui || 0;
+  const median    = bench.national_median || 78;
+  const pct       = bench.pct_vs_median || 0;
+  const barWidth  = Math.min(100, (eui_val / (median * 2)) * 100);
+  const medPos    = Math.min(100, (median / (median * 2)) * 100);
+  const fillColor = pct > 20 ? '#c0392b' : pct > 0 ? '#d4860a' : '#2e7d5b';
+
+  card1.innerHTML = `
+    <div class="card-head">
+      <span class="card-title"><span class="bullet ${pct > 20 ? 'bullet-red' : pct > 0 ? 'bullet-amber' : 'bullet-green'}"></span> EUI Benchmark</span>
+      <span class="card-tag">EPA ENERGY STAR</span>
+    </div>
+    <div class="card-body">
+      <div class="metric-grid" style="margin-bottom:1rem">
+        <div class="metric">
+          <div class="metric-val ${pct > 20 ? 'red' : pct > 0 ? 'amber' : 'green'}">${fmt(eui_val)}</div>
+          <div class="metric-label">Your EUI</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val blue">${fmt(median)}</div>
+          <div class="metric-label">National median</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val ${pct > 0 ? 'red' : 'green'}">${pct > 0 ? '+' : ''}${fmt(pct, 1)}%</div>
+          <div class="metric-label">vs median</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmt(fin.cost_per_sqft, 2)}</div>
+          <div class="metric-label">$/sqft/yr energy</div>
+        </div>
+      </div>
+
+      <div class="eui-bar-wrap">
+        <div class="eui-bar-label">
+          <span>0</span>
+          <span>▼ National median: ${fmt(median, 0)} kBtu/sqft</span>
+          <span>${fmt(median * 2, 0)}</span>
+        </div>
+        <div class="eui-track">
+          <div class="eui-fill" style="width:${barWidth}%;background:${fillColor}"></div>
+          <div class="eui-median-line" style="left:${medPos}%"></div>
+        </div>
+        <div class="eui-labels">
+          <span style="color:var(--green)">Excellent</span>
+          <span>Your building: ${fmt(eui_val, 0)} kBtu/sqft</span>
+          <span style="color:var(--red)">Poor</span>
+        </div>
+      </div>
+
+      <div class="alert ${pct > 20 ? 'danger' : pct > 5 ? 'info' : 'ok'}">
+        <span>📊</span>
+        <span>${bench.label || ''} ${bench.savings_potential_kbtu_sqft > 0 ? `Efficiency opportunity: ~${fmt(bench.savings_potential_kbtu_sqft, 1)} kBtu/sqft/yr.` : ''}</span>
+      </div>
+    </div>
+    <div class="cite-strip">
+      <span class="cite-chip">EPA ENERGY STAR Portfolio Manager Technical Reference, Aug 2024</span>
+      <span class="cite-chip">DOE CBECS 2018</span>
+    </div>
+  `;
+  panel.appendChild(card1);
+
+  // ── CITY COMPLIANCE TABLE ──
+  if (cities.length > 0) {
+    const card2 = document.createElement('div');
+    card2.className = 'card';
+
+    const rows = cities.map(c => `
+      <tr>
+        <td>
+          <div class="city-name">${c.city}</div>
+          <div class="law-badge">${c.law}</div>
+        </td>
+        <td><span class="compliant-badge ${c.compliant_now ? 'yes' : 'no'}">${c.compliant_now ? 'Compliant' : 'Non-compliant'}</span></td>
+        <td><span class="penalty-num ${c.penalty_now_usd > 0 ? 'danger' : 'ok'}">${fmtCur(c.penalty_now_usd)}</span><br><span style="font-size:9px;color:var(--light)">per year</span></td>
+        <td><span class="compliant-badge ${c.compliant_2030 ? 'yes' : 'no'}">${c.compliant_2030 ? 'Compliant' : 'Non-compliant'}</span></td>
+        <td><span class="penalty-num ${c.penalty_2030_usd > 0 ? 'danger' : 'ok'}">${fmtCur(c.penalty_2030_usd)}</span><br><span style="font-size:9px;color:var(--light)">per year</span></td>
+      </tr>
+    `).join('');
+
+    card2.innerHTML = `
+      <div class="card-head">
+        <span class="card-title"><span class="bullet bullet-red"></span> BPS Penalty Exposure</span>
+        <span class="card-tag">3 cities · cited to ordinance</span>
+      </div>
+      <table class="city-table">
+        <thead><tr>
+          <th>Jurisdiction</th>
+          <th>Now (2024–29)</th>
+          <th>Annual penalty</th>
+          <th>2030 period</th>
+          <th>2030 penalty</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <div class="cite-strip">
+        <span class="cite-chip">NYC Admin Code §28-320 / 1 RCNY §103-14</span>
+        <span class="cite-chip">Boston Municipal Code §7-2.2 (BERDO 2.0)</span>
+        <span class="cite-chip">Denver Municipal Code §§4-38</span>
+      </div>
+    `;
+    panel.appendChild(card2);
+  }
+
+  // ── SOLAR OFFSET ──
+  const card3 = document.createElement('div');
+  card3.className = 'card';
+  card3.innerHTML = `
+    <div class="card-head">
+      <span class="card-title"><span class="bullet bullet-green"></span> Solar Offset Potential</span>
+      <span class="card-tag">LL97 DER deduction</span>
+    </div>
+    <div class="card-body">
+      <div class="metric-grid">
+        <div class="metric">
+          <div class="metric-val green">${fmt(solar.system_capacity_kw, 1)}</div>
+          <div class="metric-label">Est. system (kW)</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val">${fmtInt(solar.annual_production_kwh)}</div>
+          <div class="metric-label">Annual production (kWh)</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val green">${fmtCur(solar.annual_savings_usd)}</div>
+          <div class="metric-label">Annual bill savings</div>
+        </div>
+        <div class="metric">
+          <div class="metric-val blue">${fmt(solar.ll97_der_deduction_tco2e, 2)}</div>
+          <div class="metric-label">LL97 DER deduction (tCO₂e)</div>
+        </div>
+      </div>
+      <div class="alert info">
+        <span>☀</span>
+        <span>LL97 allows solar to be counted as a Distributed Energy Resource (DER) deduction — directly reducing your reported carbon emissions. Source: NYC Admin Code §28-320.3.5</span>
+      </div>
+    </div>
+    <div class="cite-strip">
+      <span class="cite-chip">PVWatts V8 proxy (NREL/TP-6A20-62641)</span>
+      <span class="cite-chip">LL97 DER deduction §28-320.3.5</span>
+    </div>
+  `;
+  panel.appendChild(card3);
+
+  // ── UPGRADE PRIORITIES ──
+  if (upgrades.length > 0) {
+    const card4 = document.createElement('div');
+    card4.className = 'card';
+
+    const PRIORITY_COLORS = {
+      immediate: '#c0392b',
+      high:      '#d4860a',
+      medium:    '#1a4a7a',
+      long_term: '#8a8a8a',
+    };
+
+    const items = upgrades.map(u => `
+      <div class="upgrade-item">
+        <div class="upgrade-rank ${u.rank <= 2 ? 'top' : ''}">${u.rank}</div>
+        <div class="upgrade-info">
+          <h4>
+            <span class="priority-dot" style="background:${PRIORITY_COLORS[u.priority]}"></span>
+            ${u.name}
+          </h4>
+          <div class="upgrade-desc">${u.description}</div>
+          <div class="upgrade-src">Source: ${u.source}</div>
+        </div>
+        <div class="upgrade-savings">
+          <div class="savings-num">${fmtCur(u.annual_savings_usd)}/yr</div>
+          <div class="payback-label">${fmt(u.simple_payback_yr, 1)} yr payback</div>
+          <div class="payback-label" style="margin-top:2px;color:${PRIORITY_COLORS[u.priority]}">${u.priority.replace('_',' ')}</div>
+        </div>
+      </div>
+    `).join('');
+
+    card4.innerHTML = `
+      <div class="card-head">
+        <span class="card-title"><span class="bullet bullet-blue"></span> Upgrade Priority Roadmap</span>
+        <span class="card-tag">Ranked by ROI · ASHRAE 90.1-2019</span>
+      </div>
+      <div class="upgrade-list">${items}</div>
+      <div class="cite-strip">
+        <span class="cite-chip">ASHRAE 90.1-2019</span>
+        <span class="cite-chip">DOE Better Buildings 2023</span>
+        <span class="cite-chip">NYSERDA / DOE BTO 2024</span>
+        <span class="cite-chip">NREL Window Technologies Program</span>
+      </div>
+    `;
+    panel.appendChild(card4);
+  }
+
+  // ── PDF button ──
+  const pdfRow = document.createElement('div');
+  pdfRow.style.cssText = 'display:flex;justify-content:flex-end;padding:0.5rem 0';
+  pdfRow.innerHTML = `<button class="pdf-btn" onclick="window.print()">⬇ Download PDF Report</button>`;
+  panel.appendChild(pdfRow);
+}
+
+
+// ── DEMO RESULTS (shown when API is sleeping) ──
+function renderDemoResults(params) {
+  const panel = document.getElementById('results');
+  panel.innerHTML = '';
+
+  const note = document.createElement('div');
+  note.innerHTML = `
+    <div class="alert info" style="margin-bottom:1rem;border:1px solid #c4d6e8;background:var(--blue-bg);color:var(--blue);padding:10px 14px;font-size:11px">
+      <span>ℹ</span>
+      <span>Showing demo results. Your Hugging Face Space may be sleeping — the first request takes 30–60 seconds to wake. Refresh and try again to get live results for your actual inputs.</span>
+    </div>
+  `;
+  panel.appendChild(note);
+
+  // Show a sample result so they can see the format
+  const demoData = buildDemoData(params);
+  renderResults(demoData);
+}
+
+function buildDemoData(p) {
+  const sqFt = p.sq_ft || 75000;
+  const kwh  = p.annual_kwh || 1250000;
+  const th   = p.annual_therms || 8500;
+  const rate = p.elec_rate || 0.126;
+
+  const kbtu     = kwh * 3.412 + th * 100;
+  const siteEui  = kbtu / sqFt;
+  const median   = 78;
+  const pct      = ((siteEui - median) / median) * 100;
+  const mtco2e   = (kwh * 0.000788 / 2.204) + th * 0.005306;
+  const perSqft  = mtco2e / sqFt;
+  const ll97lim  = 0.00846;
+  const excess   = Math.max(0, perSqft - ll97lim);
+  const penalty  = excess * sqFt * 268;
+
+  return {
+    summary: {
+      headline: penalty > 0
+        ? `Current LL97 penalty exposure: ${fmtCur(penalty)}/yr. Upgrade plan below.`
+        : "Currently within LL97 2024–2029 limits. Plan for 2030 tightening.",
+    },
+    eui: { site_eui: Math.round(siteEui * 10) / 10 },
+    benchmark: {
+      national_median: median,
+      pct_vs_median: Math.round(pct * 10) / 10,
+      label: pct > 10 ? "Below average — significant efficiency opportunity" : "Average performance for this building type",
+      savings_potential_kbtu_sqft: Math.max(0, Math.round((siteEui - median * 0.75) * 10) / 10),
+    },
+    carbon: { total_mtco2e: Math.round(mtco2e), mtco2e_per_sqft: perSqft },
+    financials: {
+      annual_total_cost_usd: Math.round(kwh * rate + th * 1.27),
+      cost_per_sqft: Math.round(((kwh * rate + th * 1.27) / sqFt) * 100) / 100,
+    },
+    compliance: {
+      cities_checked: [{
+        city: "New York City", law: "Local Law 97 (LL97)",
+        compliant_now: penalty === 0,
+        compliant_2030: perSqft <= 0.00453,
+        penalty_now_usd: Math.round(penalty),
+        penalty_2030_usd: Math.round(Math.max(0, perSqft - 0.00453) * sqFt * 268),
+      }],
+      total_penalty_now:  Math.round(penalty),
+      total_penalty_2030: Math.round(Math.max(0, perSqft - 0.00453) * sqFt * 268),
+    },
+    solar_potential: {
+      system_capacity_kw:      Math.round(sqFt * 0.4 * 0.7 * 0.012),
+      annual_production_kwh:   Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300),
+      annual_savings_usd:      Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300 * rate),
+      ll97_der_deduction_tco2e: Math.round(sqFt * 0.4 * 0.7 * 0.012 * 1300 * 0.000289 * 100) / 100,
+    },
+    upgrade_priorities: [
+      { rank:1, name:"LED Lighting Retrofit", description:"Replace fluorescent fixtures with LED. Reduces lighting energy 40–60%.", annual_savings_usd: Math.round(kwh*rate*0.08), simple_payback_yr:2.5, priority:"immediate", source:"DOE Better Buildings, 2023" },
+      { rank:2, name:"HVAC Tune-Up & Controls", description:"Economiser calibration, VAV rebalancing, BMS scheduling.", annual_savings_usd: Math.round(kwh*rate*0.10), simple_payback_yr:1.8, priority:"immediate", source:"ASHRAE 90.1-2019 / ENERGY STAR" },
+      { rank:3, name:"Smart Thermostat / Setback Controls", description:"Occupancy-based temperature setback. 6–12% HVAC savings.", annual_savings_usd: Math.round(kwh*rate*0.07), simple_payback_yr:1.2, priority:"immediate", source:"ENERGY STAR Commercial Buildings" },
+      { rank:4, name:"Variable Frequency Drives", description:"VFDs cut motor energy 30–50% at partial load.", annual_savings_usd: Math.round(kwh*rate*0.09), simple_payback_yr:2.8, priority:"high", source:"ASHRAE 90.1-2019 §6.5.3" },
+      { rank:5, name:"Building Envelope Air Sealing", description:"Seal penetrations, weatherstrip doors/windows.", annual_savings_usd: Math.round(kwh*rate*0.06), simple_payback_yr:3.0, priority:"high", source:"DOE EERE Building Envelope R&D" },
+      { rank:6, name:"Heat Pump Conversion", description:"Replace gas boiler with high-efficiency heat pump. Critical for 2030 LL97.", annual_savings_usd: Math.round(kwh*rate*0.15), simple_payback_yr:7.0, priority:"long_term", source:"NYSERDA / DOE BTO 2024" },
+    ]
+  };
+}
+</script>
+
+<style>
+@media print {
+  header, footer, .form-card, .run-btn, .pdf-btn, .hero { display: none !important; }
+  .main { grid-template-columns: 1fr !important; padding: 0 !important; }
+  body { background: white !important; font-size: 11px; }
+  .card { border: 1px solid #ccc !important; margin-bottom: 1rem; break-inside: avoid; }
+  .card-head { background: #f5f5f5 !important; }
+  .penalty-banner.danger { background: #fdf2f0 !important; }
+  .metric-val.red   { color: #c0392b !important; }
+  .metric-val.green { color: #2e7d5b !important; }
+  .metric-val.blue  { color: #1a4a7a !important; }
+}
+</style>
+</body>
+</html>
