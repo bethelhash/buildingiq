@@ -1811,8 +1811,12 @@ footer {
 </div>
 
 <script>
-const API_BASE = 'https://amfumu-energy-audit-api.hf.space';
-const PRO_KEY  = 'PRO-AUDIT-KEY-XYZ';
+let ACTIVE_KEY = '';
+let ACTIVE_PLAN = 'free';
+function onPlanActivated(plan,key){ACTIVE_PLAN=plan;ACTIVE_KEY=key;}
+
+const API_BASE   = 'https://energy-audit-automation-api.p.rapidapi.com';
+const RAPID_HOST = 'energy-audit-automation-api.p.rapidapi.com';
 
 let selectedCities = new Set(['nyc']);
 let lastResult = null;
@@ -1904,10 +1908,23 @@ async function runAudit() {
     roof_pct: 0.40, elec_rate: elecRate, gas_rate: 0.0127,
   };
 
+  // Free users: 1 analysis per day without a key
+  if (!ACTIVE_KEY) {
+    const limit = checkFreeLimit();
+    if (!limit.allowed) {
+      const eb = document.getElementById('errorBox') || document.createElement('div');
+      eb.innerHTML = freeLimitMessage();
+      eb.style.display = 'block';
+      setLoading(false);
+      return;
+    }
+    markFreeUsed();
+  }
+
   try {
     const r = await fetch(`${API_BASE}/audit/full`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-API-Key': PRO_KEY },
+      headers: { 'Content-Type': 'application/json', 'X-RapidAPI-Key': ACTIVE_KEY||'', 'X-RapidAPI-Host': RAPID_HOST },
       body: JSON.stringify(body)
     });
     if (!r.ok) throw new Error(`API error ${r.status}`);
@@ -2775,7 +2792,7 @@ function closePdfModal() {
 <script>
 var ST={
   pricingUrl:'https://rapidapi.com/bethelnedi/api/energy-audit-automation-api/pricing',
-  apiEndpoint:'https://amfumu-energy-audit-api.hf.space',
+  apiEndpoint:'https://energy-audit-automation-api.p.rapidapi.com',
   proPrice:'$99',
   ultraPrice:'$299',
   proFeats:["Full BPS penalty analysis \u2014 LL97, BERDO, Denver", "Upgrade priority roadmap", "PDF export", "Solar offset + LL97 DER deduction"],
@@ -2800,7 +2817,7 @@ async function stVerify(){
   else if(PRO.has(key)||key.length>20){
     try{
       if(ST.apiEndpoint){
-        var r=await fetch(ST.apiEndpoint+'/health',{headers:{'X-API-Key':key}});
+        var r=await fetch(ST.apiEndpoint+'/health',{headers:{'X-RapidAPI-Key':key,'X-RapidAPI-Host':'energy-audit-automation-api.p.rapidapi.com'}});
         plan=r.ok?'pro':'free';
       } else {plan='pro'}
     }catch(e){plan='pro'}
@@ -2858,6 +2875,24 @@ stRender();
   var slot=document.getElementById('st-hdr-btn');
   if(wrap&&slot){slot.appendChild(wrap);}
 })();
+
+// ── FREE DAILY LIMIT ──
+// Free users (no key) get 1 analysis per day to protect RapidAPI quota
+function checkFreeLimit() {
+  const key = 'st_free_used_' + new Date().toISOString().slice(0,10);
+  const used = parseInt(localStorage.getItem(key) || '0');
+  return { used, key, allowed: used < 1 };
+}
+function markFreeUsed() {
+  const key = 'st_free_used_' + new Date().toISOString().slice(0,10);
+  localStorage.setItem(key, '1');
+}
+function freeLimitMessage() {
+  return `<div class="error-box" style="display:flex;align-items:center;justify-content:space-between;gap:1rem">
+    <span>&#9888; Free limit reached — 1 analysis per day without a key. Get Pro for unlimited access.</span>
+    <button onclick="stOpen()" style="background:#e8a020;color:#0a0c0f;border:none;font-family:inherit;font-size:10px;font-weight:600;padding:6px 14px;cursor:pointer;white-space:nowrap;flex-shrink:0">Get Pro</button>
+  </div>`;
+}
 </script>
 </body>
 </html>
